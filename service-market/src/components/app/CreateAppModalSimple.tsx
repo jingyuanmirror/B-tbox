@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import AgentOrchestrationPage from './AgentOrchestrationPage';
 
 interface CreateAppModalSimpleProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface CreateAppModalSimpleProps {
 
 function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showOrchestration, setShowOrchestration] = useState(false);
   const [appType, setAppType] = useState<'dialog' | 'interactive'>('dialog');
   const [buildMethod, setBuildMethod] = useState<'prompt' | 'function' | 'workflow'>('prompt');
   const [appName, setAppName] = useState('');
@@ -23,8 +25,6 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
     '旅游出行', '餐饮服务', '房产建筑', '制造业', '其他'
   ];
 
-  if (!isOpen) return null;
-
   const handleIconUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -35,6 +35,7 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
   const handleCancel = () => {
     // 重置所有状态
     setCurrentStep(1);
+    setShowOrchestration(false);
     setAppType('dialog');
     setBuildMethod('prompt');
     setAppName('');
@@ -44,9 +45,36 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
     onClose();
   };
 
-  const handleNext = () => {
-    if (appName.trim()) {
+  const handleOrchestrationClose = () => {
+    setShowOrchestration(false);
+    handleCancel();
+  };
+
+    const handleNext = () => {
+    console.log('=== handleNext 被调用 ===');
+    console.log('点击下一步，当前步骤:', currentStep);
+    console.log('构建方法:', buildMethod);
+    console.log('构建方法类型:', typeof buildMethod);
+    console.log('buildMethod === "function":', buildMethod === 'function');
+    console.log('当前 showOrchestration 状态:', showOrchestration);
+    
+    if (currentStep === 1) {
+      if (buildMethod === 'function') {
+        console.log('✅ 条件匹配：进入智能体编排页面');
+        console.log('即将设置 showOrchestration 为 true');
+        setShowOrchestration(true);
+        console.log('setShowOrchestration(true) 已调用');
+        return;
+      } else {
+        console.log('❌ 条件不匹配，buildMethod 不是 function，值为:', buildMethod);
+      }
+      
+      console.log('进入第二步配置');
       setCurrentStep(2);
+    } else if (currentStep === 2) {
+      // 第二步，创建应用
+      console.log('第二步：调用 handleCreate');
+      handleCreate();
     }
   };
 
@@ -70,8 +98,14 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
     handleCancel();
   };
 
+  // 如果模态框没有打开，不渲染任何内容
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <>
+      {/* 创建应用模态框 - 只在不显示编排页面时显示 */}
+      {!showOrchestration && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg max-w-5xl w-full h-[80vh] flex">
         {/* 左侧内容区域 */}
         <div className="flex-1 flex flex-col">
@@ -440,6 +474,15 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
         </div>
       </div>
     </div>
+      )}
+
+      {/* 智能体编排页面 */}
+      <AgentOrchestrationPage
+        isOpen={showOrchestration}
+        onClose={handleOrchestrationClose}
+        appName={appName}
+      />
+    </>
   );
 }
 
