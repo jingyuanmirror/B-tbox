@@ -79,47 +79,114 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
               resourceId: 'api_001',
               permission: 'public',
               description: '开放的API接口调用'
+            },
+            {
+              resourceType: 'knowledge_base',
+              resourceName: '公共知识库',
+              resourceId: 'kb_public_001',
+              permission: 'public',
+              description: '开放的公共知识库资源'
             }
           ]
         });
       } else {
         // 服务流和代码服务需要更详细的权限检查
-        const mockPrivateResources = [
+        // 模拟知识库权限检查结果
+        const knowledgeBaseResources = [
           {
             resourceType: 'knowledge_base' as const,
-            resourceName: '客户数据库',
-            resourceId: 'kb_001',
+            resourceName: '企业客户数据库',
+            resourceId: 'kb_customer_001',
             permission: 'private' as const,
             owner: '当前用户',
-            description: '包含敏感客户信息的私有知识库'
+            description: '包含客户联系信息、交易记录等敏感数据'
+          },
+          {
+            resourceType: 'knowledge_base' as const,
+            resourceName: '内部技术文档库',
+            resourceId: 'kb_tech_002',
+            permission: 'private' as const,
+            owner: '技术团队',
+            description: '包含内部技术规范、架构设计等机密信息'
+          },
+          {
+            resourceType: 'knowledge_base' as const,
+            resourceName: '产品知识库',
+            resourceId: 'kb_product_003',
+            permission: 'team' as const,
+            owner: '产品团队',
+            description: '产品相关的知识和文档，团队内部共享'
+          }
+        ];
+
+        // API权限检查结果
+        const apiResources = [
+          {
+            resourceType: 'api' as const,
+            resourceName: '用户认证API',
+            resourceId: 'api_auth_001', 
+            permission: 'private' as const,
+            owner: '当前用户',
+            description: '用户身份验证和授权相关接口'
           },
           {
             resourceType: 'api' as const,
-            resourceName: '内部接口调用',
-            resourceId: 'api_002', 
-            permission: 'private' as const,
-            owner: '当前用户',
-            description: '企业内部专用API接口'
+            resourceName: '数据分析API',
+            resourceId: 'api_analytics_002',
+            permission: 'team' as const,
+            owner: '数据团队',
+            description: '业务数据分析和报表生成接口'
           }
         ];
-        
-        const mockPublicResources = [
+
+        // 其他资源检查结果
+        const otherResources = [
           {
-            resourceType: 'workflow_node' as const,
-            resourceName: '数据处理节点',
-            resourceId: 'node_001',
-            permission: 'public' as const,
-            description: '标准数据处理工作流节点'
+            resourceType: 'database' as const,
+            resourceName: '业务数据库',
+            resourceId: 'db_business_001',
+            permission: 'private' as const,
+            owner: '当前用户',
+            description: '核心业务数据存储'
           },
           {
             resourceType: 'file' as const,
-            resourceName: '配置文件模板',
-            resourceId: 'file_001',
+            resourceName: '配置文件',
+            resourceId: 'file_config_001',
             permission: 'team' as const,
-            description: '团队共享的配置文件模板'
+            owner: '运维团队',
+            description: '系统配置和环境变量文件'
           }
         ];
         
+        // 合并所有私有资源
+        const mockPrivateResources = [
+          ...knowledgeBaseResources.filter(kb => kb.permission === 'private'),
+          ...apiResources.filter(api => api.permission === 'private'),
+          ...otherResources.filter(res => res.permission === 'private')
+        ];
+        
+        // 公开和团队共享资源
+        const mockPublicResources = [
+          {
+            resourceType: 'knowledge_base' as const,
+            resourceName: '公开技术博客',
+            resourceId: 'kb_blog_001',
+            permission: 'public' as const,
+            description: '对外开放的技术分享知识库'
+          },
+          {
+            resourceType: 'workflow_node' as const,
+            resourceName: '标准数据处理节点',
+            resourceId: 'node_001',
+            permission: 'public' as const,
+            description: '通用的数据处理工作流节点'
+          },
+          ...knowledgeBaseResources.filter(kb => kb.permission === 'team'),
+          ...apiResources.filter(api => api.permission === 'team'),
+          ...otherResources.filter(res => res.permission === 'team')
+        ];
+
         setPermissionCheckResult({
           canPublish: mockPrivateResources.length === 0,
           privateResources: mockPrivateResources,
@@ -980,7 +1047,16 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
                     <h4 className="font-medium text-amber-800 mb-2">权限建议</h4>
                     <ul className="text-sm text-amber-700 space-y-1">
                       <li>• 私有资源将限制服务的使用范围，只有授权用户可以访问</li>
-                      <li>• 建议将常用资源设置为公开，以提高服务的可用性</li>
+                      {permissionCheckResult.privateResources.some(r => r.resourceType === 'knowledge_base') && (
+                        <li>• <strong>知识库权限:</strong> 私有知识库包含敏感信息，建议评估数据安全级别后决定是否公开</li>
+                      )}
+                      {permissionCheckResult.privateResources.some(r => r.resourceType === 'api') && (
+                        <li>• <strong>API权限:</strong> 私有API接口可能涉及安全认证，请确认调用权限范围</li>
+                      )}
+                      {permissionCheckResult.privateResources.some(r => r.resourceType === 'database') && (
+                        <li>• <strong>数据库权限:</strong> 私有数据库访问需要严格的权限控制</li>
+                      )}
+                      <li>• 建议将常用资源设置为公开或团队共享，以提高服务的可用性</li>
                       <li>• 您可以在发布后随时调整资源权限设置</li>
                     </ul>
                   </div>
@@ -1011,10 +1087,21 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
                   </Button>
                 )}
                 <Button 
-                  onClick={() => setStep(Step.Confirm)}
+                  onClick={() => {
+                    // 直接确认上架，将数据传递给父组件
+                    const publishData = {
+                      ...formData,
+                      permissionCheckResult,
+                      publishTime: new Date().toISOString(),
+                      status: 'published'
+                    };
+                    onPublish(publishData);
+                    onClose();
+                  }}
                   disabled={permissionCheckLoading || !permissionCheckResult}
+                  className="bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {permissionCheckResult && permissionCheckResult.privateResources.length > 0 ? '确认发布' : '下一步'}
+                  确认上架
                 </Button>
               </div>
             </div>

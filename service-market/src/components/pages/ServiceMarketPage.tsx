@@ -7,11 +7,13 @@ import { ServiceMarketContent } from '../service-market/ServiceMarketContent';
 import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
 import { PublishServiceModal } from '../service-market/PublishServiceModal';
+import { useServiceStore } from '../../store/useServiceStore';
 
 export function ServiceMarketPage() {
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [activeTab, setActiveTab] = useState<ServiceType | 'all'>('all');
   const [isCompact, setIsCompact] = useState(false);
+  const { addPublishedService } = useServiceStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +27,32 @@ export function ServiceMarketPage() {
 
   const handlePublishService = (data: any) => {
     console.log('Publishing service:', data);
-    // TODO: 实现服务发布逻辑
+    
+    // 创建服务对象
+    const newService = {
+      id: `service_${Date.now()}`,
+      name: data.serviceName || '未命名服务',
+      description: data.serviceDescription || '暂无描述',
+      category: data.category || 'tools',
+      type: data.serviceType || data.type || 'plugin',
+      version: data.version || '1.0.0',
+      developer: '当前用户',
+      rating: 0,
+      usageCount: 0,
+      tags: data.tags || [],
+      createdAt: data.publishTime || new Date().toISOString(),
+      updatedAt: data.publishTime || new Date().toISOString(),
+      icon: data.logoUrl || data.logo || '',
+      permissionCheckResult: data.permissionCheckResult,
+      status: 'published',
+      isFree: true
+    };
+    
+    // 添加到已发布服务
+    addPublishedService(newService);
+    
+    // 显示成功提示
+    alert('服务发布成功！您可以在"我的已发布服务"中查看。');
   };
 
   return (

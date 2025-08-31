@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '../../lib/utils';
+import CreateAppModal from '../app/CreateAppModalSimple';
 
 interface SidebarProps {
   currentPage: string;
@@ -186,6 +187,7 @@ const renderNavigationSection = (items: any[], collapsed: boolean, currentPage: 
 
 export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [showCreateAppModal, setShowCreateAppModal] = useState(false);
 
   return (
     <div className={cn(
@@ -206,12 +208,18 @@ export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
           </div>
         )}
         {!collapsed ? (
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+          <Button 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={() => setShowCreateAppModal(true)}
+          >
             <span className="mr-2">+</span>
             新建应用
           </Button>
         ) : (
-          <Button className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white">
+          <Button 
+            className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={() => setShowCreateAppModal(true)}
+          >
             +
           </Button>
         )}
@@ -253,6 +261,12 @@ export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
           )}
         </Button>
       </div>
+
+      {/* Create App Modal */}
+      <CreateAppModal
+        isOpen={showCreateAppModal}
+        onClose={() => setShowCreateAppModal(false)}
+      />
     </div>
   );
 }
