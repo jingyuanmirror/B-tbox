@@ -15,12 +15,28 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
   const [showIntentSidebar, setShowIntentSidebar] = useState(false);
   const [showAddServiceMenu, setShowAddServiceMenu] = useState(false);
   const [showPluginModal, setShowPluginModal] = useState(false);
+  const [showWorkflowModal, setShowWorkflowModal] = useState(false);
+  const [selectedService, setSelectedService] = useState<any>(null); // 统一的服务状态，可以是插件或服务流
 
   console.log('AgentOrchestrationPage 渲染，isOpen:', isOpen, 'appName:', appName);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handlePluginSelect = (plugin: any) => {
+    setSelectedService({ ...plugin, type: 'plugin' });
+    setShowPluginModal(false);
+  };
+
+  const handleWorkflowSelect = (workflow: any) => {
+    setSelectedService({ ...workflow, type: 'workflow' });
+    setShowWorkflowModal(false);
+  };
+
+  const handleRemoveService = () => {
+    setSelectedService(null);
+  };
 
   if (!isOpen) {
     console.log('AgentOrchestrationPage 不显示，因为 isOpen 为 false');
@@ -274,53 +290,72 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                 {/* 调用服务 */}
                 <div className="space-y-3">
                   <label className="block text-sm font-medium text-gray-700">调用服务</label>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-gray-900">请添加你所希望实现的服务功能</div>
-                      </div>
-                      <div className="relative">
-                        <button 
-                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                          onClick={() => setShowAddServiceMenu(!showAddServiceMenu)}
-                        >
-                          点击添加
-                        </button>
-                        
-                        {/* 添加服务选择菜单 */}
-                        {showAddServiceMenu && (
-                          <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                            <div className="py-1">
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                                onClick={() => {
-                                  setShowAddServiceMenu(false);
-                                  setShowPluginModal(true);
-                                }}
-                              >
-                                添加插件
-                              </button>
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                                onClick={() => {
-                                  setShowAddServiceMenu(false);
-                                  // TODO: 添加服务流逻辑
-                                  console.log('添加服务流');
-                                }}
-                              >
-                                添加服务流
-                              </button>
+                  {!selectedService ? (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900">请添加你所希望实现的服务功能</div>
+                        </div>
+                        <div className="relative">
+                          <button 
+                            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                            onClick={() => setShowAddServiceMenu(!showAddServiceMenu)}
+                          >
+                            点击添加
+                          </button>
+                          
+                          {/* 添加服务选择菜单 */}
+                          {showAddServiceMenu && (
+                            <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                              <div className="py-1">
+                                <button 
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                  onClick={() => {
+                                    setShowAddServiceMenu(false);
+                                    setShowPluginModal(true);
+                                  }}
+                                >
+                                  添加插件
+                                </button>
+                                <button 
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                  onClick={() => {
+                                    setShowAddServiceMenu(false);
+                                    setShowWorkflowModal(true);
+                                  }}
+                                >
+                                  添加服务流
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center space-x-3">
+                        {selectedService.type === 'plugin' ? (
+                          <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                            <span className="text-lg">{selectedService.icon || '🆔'}</span>
+                          </div>
+                        ) : (
+                          <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-sm">📦</span>
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900">{selectedService.name}</div>
+                        </div>
+                        <div className="text-sm text-gray-500">已添加服务</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* 核心功能示意图 */}
@@ -455,10 +490,16 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <h4 className="text-sm font-medium text-gray-900">身份认证插件</h4>
-                          <button className="text-gray-400 hover:text-gray-600">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
+                          <button 
+                            className="px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded hover:bg-blue-50 transition-colors"
+                            onClick={() => handlePluginSelect({
+                              id: 'identity-auth',
+                              name: '身份认证',
+                              description: '身份认证',
+                              icon: '🆔'
+                            })}
+                          >
+                            添加
                           </button>
                         </div>
                         <p className="text-xs text-gray-500 mb-2">身份认证插件</p>
@@ -650,6 +691,170 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                       </div>
                     </div>
                   </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 添加服务流弹窗 */}
+        {showWorkflowModal && (
+          <div 
+            className="fixed inset-0 z-[1000001] flex items-center justify-center"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)' }}
+          >
+            <div className="w-[600px] h-[500px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden">
+              {/* 顶部标题栏 */}
+              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 className="text-lg font-medium text-gray-900">添加服务流</h2>
+                <button 
+                  onClick={() => setShowWorkflowModal(false)}
+                  className="w-6 h-6 text-gray-400 hover:text-gray-600"
+                >
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 搜索框 */}
+              <div className="px-6 py-4 border-b border-gray-200">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="搜索服务流"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* 服务流列表 */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-3">
+                {/* 旅游小助 服务流 1 */}
+                <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-medium">📦</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900">旅游小助</h4>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">服务流</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-1">✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...</p>
+                          <p className="text-xs text-gray-400">发布于 2024-06-17 16:25</p>
+                        </div>
+                        <button 
+                          className="ml-3 px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded hover:bg-blue-50 transition-colors flex-shrink-0"
+                          onClick={() => handleWorkflowSelect({
+                            id: 'travel-assistant-1',
+                            name: '旅游小助',
+                            description: '✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...'
+                          })}
+                        >
+                          添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 旅游小助 服务流 2 */}
+                <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-medium">📦</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900">旅游小助</h4>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">服务流</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-1">✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...</p>
+                          <p className="text-xs text-gray-400">发布于 2024-06-17 16:25</p>
+                        </div>
+                        <button 
+                          className="ml-3 px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded hover:bg-blue-50 transition-colors flex-shrink-0"
+                          onClick={() => handleWorkflowSelect({
+                            id: 'travel-assistant-2',
+                            name: '旅游小助',
+                            description: '✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...'
+                          })}
+                        >
+                          添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 旅游小助 服务流 3 */}
+                <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-medium">📦</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900">旅游小助</h4>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">服务流</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-1">✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...</p>
+                          <p className="text-xs text-gray-400">发布于 2024-06-17 16:25</p>
+                        </div>
+                        <button 
+                          className="ml-3 px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded hover:bg-blue-50 transition-colors flex-shrink-0"
+                          onClick={() => handleWorkflowSelect({
+                            id: 'travel-assistant-3',
+                            name: '旅游小助',
+                            description: '✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...'
+                          })}
+                        >
+                          添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 旅游小助 服务流 4 */}
+                <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-medium">📦</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900">旅游小助</h4>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">服务流</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-1">✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...</p>
+                          <p className="text-xs text-gray-400">发布于 2024-06-17 16:25</p>
+                        </div>
+                        <button 
+                          className="ml-3 px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded hover:bg-blue-50 transition-colors flex-shrink-0"
+                          onClick={() => handleWorkflowSelect({
+                            id: 'travel-assistant-4',
+                            name: '旅游小助',
+                            description: '✨ 你好，我是您的私人旅行设计师！🗺️ 告诉我您心中的梦想旅游您心中的梦...'
+                          })}
+                        >
+                          添加
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
