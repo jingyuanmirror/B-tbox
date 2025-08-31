@@ -2,12 +2,12 @@
 
 import React, { useState, useRef } from 'react';
 
-interface CreateAppModalSimpleProps {
+interface CreateAppModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
+function CreateAppModal({ isOpen, onClose }: CreateAppModalProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [appType, setAppType] = useState<'dialog' | 'interactive'>('dialog');
   const [buildMethod, setBuildMethod] = useState<'prompt' | 'function' | 'workflow'>('prompt');
@@ -359,82 +359,82 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
             {/* 手机框架容器 - 居中显示 */}
             <div className="flex-1 flex items-center justify-center">
               <div className="bg-black rounded-[1.2rem] p-1" style={{ width: '224px', height: '400px' }}>
-              <div className="bg-white rounded-[1rem] h-full flex flex-col overflow-hidden">
-                {/* 状态栏 */}
-                <div className="h-6 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-between px-2 text-white text-xs">
-                  <span>9:41</span>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-1 bg-white rounded-sm"></div>
-                    <div className="w-3 h-1.5 border border-white rounded-sm">
-                      <div className="w-1.5 h-0.5 bg-white rounded-sm m-0.5"></div>
+                <div className="bg-white rounded-[1rem] h-full flex flex-col overflow-hidden">
+                  {/* 状态栏 */}
+                  <div className="h-6 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-between px-2 text-white text-xs">
+                    <span>9:41</span>
+                    <div className="flex items-center space-x-1">
+                      <div className="w-2 h-1 bg-white rounded-sm"></div>
+                      <div className="w-3 h-1.5 border border-white rounded-sm">
+                        <div className="w-1.5 h-0.5 bg-white rounded-sm m-0.5"></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* 应用界面 */}
-                <div className="flex-1 p-3">
-                  {/* 应用头部 */}
-                  <div className="flex items-center space-x-2 mb-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center">
-                      {appIcon ? (
-                        <img 
-                          src={URL.createObjectURL(appIcon)} 
-                          alt="App icon" 
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <span className="text-sm">🤖</span>
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 text-xs">
-                        {appName || '应用名称'}
-                      </h4>
-                      <div className="flex items-center space-x-1 text-xs text-gray-500">
-                        <span>{appType === 'dialog' ? '对话式应用' : '交互式应用'}</span>
-                        {industry && (
-                          <>
-                            <span>•</span>
-                            <span>{industry}</span>
-                          </>
+                  
+                  {/* 应用界面 */}
+                  <div className="flex-1 p-3">
+                    {/* 应用头部 */}
+                    <div className="flex items-center space-x-2 mb-3">
+                      <div className="w-8 h-8 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center">
+                        {appIcon ? (
+                          <img 
+                            src={URL.createObjectURL(appIcon)} 
+                            alt="App icon" 
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        ) : (
+                          <span className="text-sm">🤖</span>
                         )}
                       </div>
-                    </div>
-                  </div>
-
-                  {/* 应用描述卡片 */}
-                  <div className="bg-gray-50 rounded-lg p-2 mb-2">
-                    <h5 className="font-medium text-xs text-gray-900 mb-1">应用介绍</h5>
-                    <p className="text-xs text-gray-600 leading-relaxed">
-                      {appDescription || '这里会显示您的应用功能介绍...'}
-                    </p>
-                  </div>
-
-                  {/* 功能预览 */}
-                  <div className="space-y-1.5">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
-                      <div className="flex items-center space-x-1.5 mb-1">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
+                      <div>
+                        <h4 className="font-medium text-gray-900 text-xs">
+                          {appName || '应用名称'}
+                        </h4>
+                        <div className="flex items-center space-x-1 text-xs text-gray-500">
+                          <span>{appType === 'dialog' ? '对话式应用' : '交互式应用'}</span>
+                          {industry && (
+                            <>
+                              <span>•</span>
+                              <span>{industry}</span>
+                            </>
+                          )}
                         </div>
-                        <span className="text-xs font-medium text-blue-900">
-                          {buildMethod === 'prompt' && 'Prompt驱动'}
-                          {buildMethod === 'function' && '功能编排'}
-                          {buildMethod === 'workflow' && '工作流引擎'}
-                        </span>
                       </div>
                     </div>
-                  </div>
 
-                  {/* 底部操作按钮 */}
-                  <div className="mt-3">
-                    <button className="w-full bg-blue-500 text-white text-xs font-medium py-2 rounded-lg">
-                      开始使用
-                    </button>
+                    {/* 应用描述卡片 */}
+                    <div className="bg-gray-50 rounded-lg p-2 mb-2">
+                      <h5 className="font-medium text-xs text-gray-900 mb-1">应用介绍</h5>
+                      <p className="text-xs text-gray-600 leading-relaxed">
+                        {appDescription || '这里会显示您的应用功能介绍...'}
+                      </p>
+                    </div>
+
+                    {/* 功能预览 */}
+                    <div className="space-y-1.5">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                        <div className="flex items-center space-x-1.5 mb-1">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs">✓</span>
+                          </div>
+                          <span className="text-xs font-medium text-blue-900">
+                            {buildMethod === 'prompt' && 'Prompt驱动'}
+                            {buildMethod === 'function' && '功能编排'}
+                            {buildMethod === 'workflow' && '工作流引擎'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 底部操作按钮 */}
+                    <div className="mt-3">
+                      <button className="w-full bg-blue-500 text-white text-xs font-medium py-2 rounded-lg">
+                        开始使用
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
@@ -443,4 +443,4 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
   );
 }
 
-export default CreateAppModalSimple;
+export default CreateAppModal;
