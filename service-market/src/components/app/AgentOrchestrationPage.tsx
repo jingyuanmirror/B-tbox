@@ -515,6 +515,21 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                     <span>💎</span>
                     <span>MCP专区</span>
                   </button>
+                  
+                  {/* 分隔线 */}
+                  <div className="border-t border-gray-200 my-3"></div>
+                  
+                  {/* 服务流选项 */}
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg flex items-center space-x-2 border border-red-300">
+                    <span>🔄</span>
+                    <span>服务流</span>
+                  </button>
+                  
+                  {/* 代码服务选项 */}
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg flex items-center space-x-2">
+                    <span>💻</span>
+                    <span>代码服务</span>
+                  </button>
                 </div>
               </div>
 

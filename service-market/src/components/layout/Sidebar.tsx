@@ -98,6 +98,18 @@ const APP_ITEMS = [
     description: ''
   },
   {
+    key: 'service-flow',
+    label: '服务流',
+    icon: TrendingUp,
+    description: ''
+  },
+  {
+    key: 'code-service',
+    label: '代码服务',
+    icon: Activity,
+    description: ''
+  },
+  {
     key: 'cards-section',
     label: '卡片',
     icon: CreditCard,

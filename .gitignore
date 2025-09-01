@@ -95,3 +95,5 @@ pids
 
 # Optional stylelint cache
 .stylelintcache
+.node
+package-lock.json
