@@ -40,7 +40,7 @@ npm run lint
 ### Project Structure
 - **Main App**: `/src/app/` - Primary Next.js application with App Router
 - **Service Market Prototype**: `/service-market/` - Separate Next.js app for service market prototyping
-- **Documentation**: ` . result/service_market_prd.md` - Complete Product Requirement Document
+- **App Builder**: `/app-builder/` - Additional application building utilities
 
 ### Key Business Requirements
 1. **Service Discovery**: Multi-type service browsing with category filtering (search, video, image, news, data, communication, tools)
@@ -50,12 +50,24 @@ npm run lint
 3. **Service Cards**: Plugin/MCP cards must display tool counts, no evaluation system implemented
 4. **Permission Management**: Resource permission validation required for service publishing workflows/code services
 
-## Service Market PRD
+## Application Architecture
 
-The complete PRD at ` . result/service_market_prd.md` contains:
-- Detailed UI/UX specifications including service card designs
-- Service publishing workflow with permission validation
-- Technical implementation requirements and database schemas
-- User experience guidelines and interaction patterns
+### Dual App Structure
+The project contains two distinct Next.js applications:
 
-The PRD specifies that plugin and MCP service cards should show "🔧 包含X个工具" (contains X tools) and no rating/evaluation system is currently implemented.
+1. **Main App** (`/src/app/`): Simple application that imports and uses components from the service-market prototype
+2. **Service Market Prototype** (`/service-market/`): Full-featured prototype with comprehensive UI components, state management, and business logic
+
+### Service Market Features
+- **UI Components**: Built with shadcn/ui, Radix UI, and Tailwind CSS
+- **State Management**: Zustand for global state, React Hook Form for form state
+- **Internationalization**: next-intl for multi-language support
+- **Theming**: next-themes for dark/light mode support
+- **Data Fetching**: SWR for API data management
+- **Animations**: Framer Motion for smooth transitions
+
+### Key Implementation Details
+- Main app imports service-market components using relative paths: `../../service-market/src/components/...`
+- Service cards display tool counts for plugins/MCP services: "🔧 包含X个工具"
+- No rating/evaluation system implemented by design
+- Workflow Editor available at `/service-market/src/app/workflow-editor/`
