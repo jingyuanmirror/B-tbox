@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **百宝箱企业版服务市场** (Baibao Box Enterprise Service Market) project - an AI-native application development platform that provides a comprehensive service marketplace. The project is upgrading from a simple plugin market to support multiple service types.
+This is a **百宝箱企业版服务市场** (Baibao Box Enterprise Service Market) project - an AI-native application development platform that provides a comprehensive service marketplace with a unified, modern architecture.
 
 ### Service Types
 - **插件 (Plugins)**: Reusable functional components that can be subscribed and referenced across AI agents
@@ -12,20 +12,26 @@ This is a **百宝箱企业版服务市场** (Baibao Box Enterprise Service Mark
 - **服务流 (Service Flow)**: Complex service templates built with workflows that can be purchased and instantiated
 - **代码服务 (Code Service)**: Custom service templates built with code that can be purchased and instantiated
 
+### Architecture Highlights
+- **Unified Structure**: All code organized under `/src/` directory with clear module separation
+- **Modern Import System**: Uses `@/` path aliases for clean, maintainable imports
+- **Component-Based**: Modular UI components with shadcn/ui foundation
+- **Chinese-First**: Pure Chinese interface without i18n complexity
+
 ## Development Commands
 
 ```bash
 # Start development server with Turbopack
-npm run dev
+pnpm dev
 
 # Build for production with Turbopack  
-npm run build
+pnpm build
 
 # Start production server
-npm start
+pnpm start
 
 # Run linting
-npm run lint
+pnpm lint
 ```
 
 ## Architecture
@@ -37,10 +43,23 @@ npm run lint
 - **Build Tool**: Turbopack (enabled for dev and build)
 - **Fonts**: Geist Sans and Geist Mono
 
-### Project Structure
-- **Main App**: `/src/app/` - Primary Next.js application with App Router
-- **Service Market Prototype**: `/service-market/` - Separate Next.js app for service market prototyping
-- **App Builder**: `/app-builder/` - Additional application building utilities
+### Project Structure  
+```
+/src/
+  /app/                    # Next.js App Router pages
+  /components/             # All UI components
+    /ui/                   # Basic UI components (shadcn/ui)
+    /layout/               # Layout components (Sidebar, Header)
+    /service-market/       # Service marketplace components
+    /app-builder/          # Application building components
+    /pages/                # Page-level components
+  /lib/                    # Utility functions
+  /hooks/                  # Custom React hooks
+  /store/                  # Zustand state management
+  /types/                  # TypeScript type definitions
+  /constants/              # App constants and configuration
+  /providers/              # React context providers
+```
 
 ### Key Business Requirements
 1. **Service Discovery**: Multi-type service browsing with category filtering (search, video, image, news, data, communication, tools)
@@ -52,62 +71,49 @@ npm run lint
 
 ## Application Architecture
 
-### Dual App Structure
-The project contains two distinct Next.js applications:
+### Unified Modern Structure
+This is a single Next.js application with a clean, organized codebase:
 
-1. **Main App** (`/src/app/`): Simple application that imports and uses components from the service-market prototype
-2. **Service Market Prototype** (`/service-market/`): Full-featured prototype with comprehensive UI components, state management, and business logic
+- **Single App**: All functionality unified under `/src/` directory
+- **Clean Imports**: Uses `@/` path aliases for maintainable imports
+- **Modular Components**: Well-organized component hierarchy
+- **Modern Stack**: Latest Next.js 15.5 with Turbopack, React 19, TypeScript
 
-### Service Market Features
+### Key Features
 - **UI Components**: Built with shadcn/ui, Radix UI, and Tailwind CSS
 - **State Management**: Zustand for global state, React Hook Form for form state
-- **Internationalization**: next-intl for multi-language support
 - **Theming**: next-themes for dark/light mode support
 - **Data Fetching**: SWR for API data management
 - **Animations**: Framer Motion for smooth transitions
+- **Chinese-First**: No internationalization complexity - pure Chinese interface
 
 ### Key Implementation Details
-- Main app imports service-market components using relative paths: `../../service-market/src/components/...`
+- All imports use clean `@/` aliases (e.g., `@/components/ui/button`)
 - Service cards display tool counts for plugins/MCP services: "🔧 包含X个工具"
 - No rating/evaluation system implemented by design
-- Workflow Editor available at `/service-market/src/app/workflow-editor/`
-
-## Working with Multiple Apps
-
-### Development Workflow
-When making changes, consider which app needs modification:
-- **Main App Changes**: Edit files in `/src/app/` - this is the primary application
-- **Service Market Changes**: Edit files in `/service-market/src/` - this contains the full prototype implementation
-- **Shared Dependencies**: Both apps share identical dependencies and must be kept in sync
-
-### Running Applications
-```bash
-# Run main app (imports from service-market)
-npm run dev
-
-# Run service-market prototype independently  
-cd service-market && npm run dev
-```
+- Workflow Editor available at `/src/app/workflow-editor/`
 
 ## Component Architecture
 
 ### Service System
-Core service types are defined in `/service-market/src/types/service.ts`:
+Core service types are defined in `/src/types/service.ts`:
 - **ServiceType**: PLUGIN, MCP, SERVICE_FLOW, CODE_SERVICE
 - **ServiceCategory**: search, video, image, news, data, communication, tools
 - **UsageType**: subscribe (for plugins/MCP) vs purchase (for flows/code services)
 
 ### State Management
-- **Zustand Store**: `/service-market/src/store/useServiceStore.ts` handles global service state
-- **Service Hook**: `/service-market/src/hooks/useServices.ts` manages data fetching with SWR
+- **Zustand Store**: `/src/store/useServiceStore.ts` handles global service state
+- **Service Hook**: `/src/hooks/useServices.ts` manages data fetching with SWR
 - **Form State**: React Hook Form for complex forms like service publishing
 
 ### UI Component Structure
-- **Layout Components**: Sidebar, AppHeader, Navigation in `/service-market/src/components/layout/`
-- **Service Components**: ServiceCard, ServiceGrid, SearchAndFilters in `/service-market/src/components/services/`
-- **UI Primitives**: shadcn/ui components in `/service-market/src/components/ui/`
+- **Layout Components**: Sidebar, AppHeader, Navigation in `/src/components/layout/`
+- **Service Components**: ServiceCard, ServiceGrid, SearchAndFilters in `/src/components/service-market/`
+- **App Builder Components**: CreateApp modals and orchestration in `/src/components/app-builder/`
+- **UI Primitives**: shadcn/ui components in `/src/components/ui/`
 
 ### Important Business Logic
 - Service cards show tool counts only for PLUGIN and MCP types
 - Different interaction patterns: subscribe vs purchase based on service type
 - No evaluation/rating system - this is intentional design decision
+- All imports use `@/` path aliases for clean, maintainable code

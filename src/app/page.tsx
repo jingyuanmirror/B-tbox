@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Sidebar } from "../../service-market/src/components/layout/Sidebar";
-import { AppHeader } from "../../service-market/src/components/layout/AppHeader";
-import { DashboardPage } from "../../service-market/src/components/pages/DashboardPage";
-import { ServiceMarketPage } from "../../service-market/src/components/pages/ServiceMarketPage";
-import { PlaceholderPage } from "../../service-market/src/components/pages/PlaceholderPage";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { AppHeader } from "@/components/layout/AppHeader";
+import { DashboardPage } from "@/components/pages/DashboardPage";
+import { ServiceMarketPage } from "@/components/pages/ServiceMarketPage";
+import { PlaceholderPage } from "@/components/pages/PlaceholderPage";
 import {
   Bot,
   BarChart3,
