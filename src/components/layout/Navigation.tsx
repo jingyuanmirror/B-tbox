@@ -1,6 +1,6 @@
 'use client';
 
-import { ServiceCategory, ServiceType } from @/types/service';
+import { ServiceCategory, ServiceType } from '@/types/service';
 import { CATEGORY_CONFIG } from '@/constants/categories';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
