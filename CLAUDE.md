@@ -71,3 +71,43 @@ The project contains two distinct Next.js applications:
 - Service cards display tool counts for plugins/MCP services: "🔧 包含X个工具"
 - No rating/evaluation system implemented by design
 - Workflow Editor available at `/service-market/src/app/workflow-editor/`
+
+## Working with Multiple Apps
+
+### Development Workflow
+When making changes, consider which app needs modification:
+- **Main App Changes**: Edit files in `/src/app/` - this is the primary application
+- **Service Market Changes**: Edit files in `/service-market/src/` - this contains the full prototype implementation
+- **Shared Dependencies**: Both apps share identical dependencies and must be kept in sync
+
+### Running Applications
+```bash
+# Run main app (imports from service-market)
+npm run dev
+
+# Run service-market prototype independently  
+cd service-market && npm run dev
+```
+
+## Component Architecture
+
+### Service System
+Core service types are defined in `/service-market/src/types/service.ts`:
+- **ServiceType**: PLUGIN, MCP, SERVICE_FLOW, CODE_SERVICE
+- **ServiceCategory**: search, video, image, news, data, communication, tools
+- **UsageType**: subscribe (for plugins/MCP) vs purchase (for flows/code services)
+
+### State Management
+- **Zustand Store**: `/service-market/src/store/useServiceStore.ts` handles global service state
+- **Service Hook**: `/service-market/src/hooks/useServices.ts` manages data fetching with SWR
+- **Form State**: React Hook Form for complex forms like service publishing
+
+### UI Component Structure
+- **Layout Components**: Sidebar, AppHeader, Navigation in `/service-market/src/components/layout/`
+- **Service Components**: ServiceCard, ServiceGrid, SearchAndFilters in `/service-market/src/components/services/`
+- **UI Primitives**: shadcn/ui components in `/service-market/src/components/ui/`
+
+### Important Business Logic
+- Service cards show tool counts only for PLUGIN and MCP types
+- Different interaction patterns: subscribe vs purchase based on service type
+- No evaluation/rating system - this is intentional design decision
