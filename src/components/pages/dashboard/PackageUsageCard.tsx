@@ -1,0 +1,134 @@
+'use client';
+
+import { Package, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+
+interface UsageItem {
+  type: 'token' | 'plugin';
+  icon: string;
+  label: string;
+  used: number;
+  total: number;
+  unit: string;
+  estimatedDaysLeft: number;
+  color: string;
+}
+
+const USAGE_ITEMS: UsageItem[] = [
+  {
+    type: 'token',
+    icon: '💬',
+    label: 'Token使用量',
+    used: 8.5,
+    total: 10,
+    unit: 'M',
+    estimatedDaysLeft: 6,
+    color: 'bg-blue-600'
+  },
+  {
+    type: 'plugin',
+    icon: '🔌',
+    label: '插件调用',
+    used: 4.5,
+    total: 10,
+    unit: 'K',
+    estimatedDaysLeft: 18,
+    color: 'bg-green-600'
+  }
+];
+
+export function PackageUsageCard() {
+  const overallUsage = 78; // 整体使用率
+  const hasHighUsageWarning = USAGE_ITEMS.some(item => (item.used / item.total) > 0.8);
+  
+  return (
+    <Card className="relative overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">
+          📦 套餐使用情况
+        </CardTitle>
+        <Package className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* 整体使用率 */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-muted-foreground">整体使用率</span>
+            <span className="text-lg font-bold">{overallUsage}%</span>
+          </div>
+          <Progress value={overallUsage} className="h-2" />
+        </div>
+
+        {/* 详细使用情况 */}
+        <div className="space-y-3">
+          {USAGE_ITEMS.map((item, index) => {
+            const usagePercentage = (item.used / item.total) * 100;
+            const isHighUsage = usagePercentage > 80;
+            
+            return (
+              <div key={index} className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-1">
+                    <span className="text-xs">{item.icon}</span>
+                    <span className="text-xs font-medium">{item.label}</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {usagePercentage.toFixed(0)}%
+                  </div>
+                </div>
+                <Progress 
+                  value={usagePercentage} 
+                  className="h-1.5" 
+                />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>
+                    {item.used}{item.unit}/{item.total}{item.unit}
+                  </span>
+                  <span className={`flex items-center space-x-1 ${
+                    isHighUsage ? 'text-orange-500' : 'text-green-500'
+                  }`}>
+                    <span>预计剩余: {item.estimatedDaysLeft}天</span>
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 预警提醒 */}
+        {hasHighUsageWarning && (
+          <div className="mt-3 p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+            <div className="flex items-center space-x-2 mb-2">
+              <AlertTriangle className="h-3 w-3 text-orange-500" />
+              <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
+                Token使用率偏高，建议优化
+              </span>
+            </div>
+            <div className="flex space-x-2">
+              <Button variant="outline" size="sm" className="text-xs h-6 px-2 border-orange-300 hover:bg-orange-100">
+                查看详情
+              </Button>
+              <Button variant="outline" size="sm" className="text-xs h-6 px-2 border-orange-300 hover:bg-orange-100">
+                优化建议
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 趋势提示 */}
+        <div className="flex items-center justify-between pt-1 border-t">
+          <div className="flex items-center space-x-1">
+            <TrendingUp className="h-3 w-3 text-blue-500" />
+            <span className="text-xs text-muted-foreground">使用趋势</span>
+          </div>
+          <Badge variant="secondary" className="text-xs">
+            较上周 +15%
+          </Badge>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
