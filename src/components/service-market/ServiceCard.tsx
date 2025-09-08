@@ -11,9 +11,11 @@ import { cn } from '@/lib/utils';
 interface ServiceCardProps {
   service: Service;
   onViewDetails?: (serviceId: string) => void;
+  onSubscribe?: (serviceId: string) => void;
+  onPurchase?: (serviceId: string) => void;
 }
 
-export function ServiceCard({ service, onViewDetails }: ServiceCardProps) {
+export function ServiceCard({ service, onViewDetails, onSubscribe, onPurchase }: ServiceCardProps) {
   const getServiceTypeLabel = (type: ServiceType) => {
     switch (type) {
       case ServiceType.PLUGIN:

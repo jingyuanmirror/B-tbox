@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import SystemPromptPanel from './SystemPromptPanel';
+import SkillRecommendationPanel, { SkillTemplate } from './SkillRecommendationPanel';
 
 interface AgentOrchestrationPageProps {
   isOpen: boolean;
@@ -16,7 +18,23 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
   const [showAddServiceMenu, setShowAddServiceMenu] = useState(false);
   const [showPluginModal, setShowPluginModal] = useState(false);
   const [showWorkflowModal, setShowWorkflowModal] = useState(false);
-  const [selectedService, setSelectedService] = useState<any>(null); // 统一的服务状态，可以是插件或服务流
+  const [selectedService, setSelectedService] = useState<{id: string; name: string; description: string; type: string; icon?: string} | null>(null); // 统一的服务状态，可以是插件或服务流
+  
+  // 新增状态管理
+  const [leftPanelMode, setLeftPanelMode] = useState<'prompt' | 'skills'>('prompt');
+  const [skills, setSkills] = useState<Array<{id: string; name: string; description: string}>>([]);
+  const [_draggedSkill, setDraggedSkill] = useState<SkillTemplate | null>(null);
+  
+  // 意图识别表单状态
+  const [intentName, setIntentName] = useState('意图识别');
+  const [intentScenario, setIntentScenario] = useState('');
+  
+  // 模拟应用基本信息
+  const appInfo = {
+    name: appName || '333',
+    description: '对话配置助手',
+    industry: '旅游'
+  };
 
   console.log('AgentOrchestrationPage 渲染，isOpen:', isOpen, 'appName:', appName);
 
@@ -24,17 +42,21 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
     setMounted(true);
   }, []);
 
-  const handlePluginSelect = (plugin: any) => {
+  const handlePluginSelect = (plugin: {id: string; name: string; description: string; icon?: string}) => {
     setSelectedService({ ...plugin, type: 'plugin' });
     setShowPluginModal(false);
   };
 
-  const handleWorkflowSelect = (workflow: any) => {
+  const handleWorkflowSelect = (workflow: {id: string; name: string; description: string}) => {
     setSelectedService({ ...workflow, type: 'workflow' });
     setShowWorkflowModal(false);
   };
 
   const handleRemoveService = () => {
+    // 如果当前选中的服务存在，从skills数组中移除对应的技能
+    if (selectedService) {
+      setSkills(prev => prev.filter(skill => skill.id !== selectedService.id));
+    }
     setSelectedService(null);
   };
 
@@ -42,6 +64,44 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
     if (selectedService && selectedService.type === 'workflow') {
       // 跳转到服务流编排页面
       window.open('/workflow-editor', '_blank');
+    }
+  };
+
+  // 打开意图识别侧边栏
+  const openIntentSidebar = () => {
+    // 如果没有选中的服务，则重置为默认值
+    if (!selectedService) {
+      setIntentName('意图识别');
+      setIntentScenario('');
+    }
+    setShowIntentSidebar(true);
+  };
+  
+  // 从技能模板添加技能
+  const addSkillFromTemplate = (skillTemplate: SkillTemplate) => {
+    const newSkill = {
+      id: skillTemplate.skillId,
+      name: skillTemplate.name,
+      description: skillTemplate.description
+    };
+    
+    // 检查是否已存在
+    if (!skills.find(s => s.id === newSkill.id)) {
+      setSkills(prev => [...prev, newSkill]);
+      
+      // 自动更新意图识别表单
+      setIntentName(skillTemplate.name);
+      setIntentScenario(skillTemplate.description);
+      
+      // 自动打开意图识别侧边栏并预填充信息
+      setSelectedService({
+        id: skillTemplate.skillId,
+        name: skillTemplate.name,
+        description: skillTemplate.description,
+        type: 'plugin',
+        icon: '🔧'
+      });
+      setShowIntentSidebar(true);
     }
   };
 
@@ -167,10 +227,65 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
           </div>
         </div>
 
-        {/* 主要内容区域 - 全宽无左侧边栏 */}
-        <div className="h-[calc(100vh-64px)] bg-gray-50">
-          <div className="flex items-start justify-start pt-8 pl-16 pr-8">
-            <div className="flex space-x-4 w-full max-w-5xl">
+        {/* 主要内容区域 - 左右分栏布局 */}
+        <div className="h-[calc(100vh-64px)] bg-gray-50 flex">
+          {/* 左侧配置面板 */}
+          <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+            {/* 面板切换标签 */}
+            <div className="border-b border-gray-200 flex">
+              <button
+                onClick={() => setLeftPanelMode('prompt')}
+                className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  leftPanelMode === 'prompt'
+                    ? 'border-blue-500 text-blue-600 bg-blue-50'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                系统Prompt
+              </button>
+              <button
+                onClick={() => setLeftPanelMode('skills')}
+                className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  leftPanelMode === 'skills'
+                    ? 'border-blue-500 text-blue-600 bg-blue-50'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                技能推荐
+              </button>
+            </div>
+            
+            {/* 面板内容 */}
+            <div className="flex-1 overflow-hidden">
+              {leftPanelMode === 'prompt' ? (
+                <SystemPromptPanel
+                  appName={appInfo.name}
+                  appDescription={appInfo.description}
+                  industry={appInfo.industry}
+                  hasPreCheck={false}
+                  hasFastDecision={false}
+                  skills={skills}
+                  onPromptChange={() => {
+                    // Handle prompt changes if needed
+                  }}
+                />
+              ) : (
+                <SkillRecommendationPanel
+                  currentIndustry={appInfo.industry}
+                  existingSkills={skills.map(s => s.id)}
+                  onSkillDragStart={(skill) => setDraggedSkill(skill)}
+                  onSkillSelect={(skill) => {
+                    // 直接添加技能的逻辑
+                    addSkillFromTemplate(skill);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          
+          {/* 右侧编排视图 */}
+          <div className="flex-1 flex items-start justify-center pt-8 px-8">
+            <div className="flex space-x-4 w-full max-w-4xl">
               {/* Step 1 - 前置判断 */}
               <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col h-48">
                 <div className="flex items-center space-x-2 mb-4">
@@ -220,9 +335,27 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
               </div>
 
               {/* Step 3 - 意图识别 */}
-              <div 
-                className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col h-48 cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => setShowIntentSidebar(true)}
+              <div
+                className="flex-1 bg-white rounded-lg shadow-sm border-2 border-dashed border-gray-200 p-4 flex flex-col h-48 cursor-pointer hover:shadow-md transition-all"
+                onClick={() => openIntentSidebar()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.add('border-blue-400', 'bg-blue-50');
+                }}
+                onDragLeave={(e) => {
+                  e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50');
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50');
+                  
+                  try {
+                    const skillData = JSON.parse(e.dataTransfer.getData('application/json'));
+                    addSkillFromTemplate(skillData);
+                  } catch (error) {
+                    console.error('Failed to parse dropped skill data:', error);
+                  }
+                }}
               >
                 <div className="flex items-center space-x-2 mb-4">
                   <div className="px-2 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-medium">
@@ -237,12 +370,33 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                 </div>
                 
                 <div className="flex-1 flex flex-col items-center justify-center space-y-1">
-                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-500 text-xs">添加新功能</p>
+                  {skills.length > 0 ? (
+                    <div className="w-full space-y-2">
+                      <p className="text-xs text-gray-600 text-center mb-2">已添加 {skills.length} 个技能</p>
+                      <div className="space-y-1 max-h-24 overflow-y-auto">
+                        {skills.slice(0, 3).map(skill => (
+                          <div key={skill.id} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded truncate">
+                            {skill.name}
+                          </div>
+                        ))}
+                        {skills.length > 3 && (
+                          <div className="text-xs text-gray-500 text-center">
+                            +{skills.length - 3} 个技能...
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </div>
+                      <p className="text-gray-500 text-xs">拖拽或点击添加技能</p>
+                      <p className="text-gray-400 text-xs">从左侧技能推荐中选择</p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -291,9 +445,9 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                   <label className="block text-sm font-medium text-gray-700">功能名称</label>
                   <input
                     type="text"
-                    value="意图识别"
+                    value={intentName}
+                    onChange={(e) => setIntentName(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    readOnly
                   />
                 </div>
 
@@ -304,6 +458,8 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
                     <span className="text-xs text-gray-400">指定调用</span>
                   </div>
                   <textarea
+                    value={intentScenario}
+                    onChange={(e) => setIntentScenario(e.target.value)}
                     placeholder="请针对该场景填写最贴近的描述，添加一些具体示例进行详明可以让智能体判断的更为准确"
                     className="w-full h-20 px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
                   />

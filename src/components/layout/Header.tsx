@@ -3,7 +3,7 @@
 import { Search, Menu, User, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ThemeToggle } from '@/componen@/components/ui/theme-toggle';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export function Header() {
   return (

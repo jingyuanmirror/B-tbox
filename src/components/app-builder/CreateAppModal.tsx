@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/componen@/components/ui/dialog';
-import { Button } from '@/componen@/components/ui/button';
-import { Input } from '@/componen@/components/ui/input';
-import { Textarea } from '@/componen@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Upload, X, Smartphone } from 'lucide-react';
 
 interface CreateAppModalProps {
@@ -206,7 +206,7 @@ export default function CreateAppModal({ open, onOpenChange }: CreateAppModalPro
                         <label className="block text-sm font-medium mb-2">App Name</label>
                         <Input
                           value={appName}
-                          onChange={(e) => setAppName(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAppName(e.target.value)}
                           placeholder="Enter your app name"
                           className="w-full"
                         />
@@ -216,7 +216,7 @@ export default function CreateAppModal({ open, onOpenChange }: CreateAppModalPro
                         <label className="block text-sm font-medium mb-2">Description</label>
                         <Textarea
                           value={appDescription}
-                          onChange={(e) => setAppDescription(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setAppDescription(e.target.value)}
                           placeholder="Describe what your app does"
                           rows={4}
                           className="w-full"
@@ -300,7 +300,7 @@ export default function CreateAppModal({ open, onOpenChange }: CreateAppModalPro
                         <label className="block text-sm font-medium mb-2">Logo URL</label>
                         <Input
                           value={logoUrl}
-                          onChange={(e) => setLogoUrl(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogoUrl(e.target.value)}
                           placeholder="https://example.com/logo.png"
                           className="w-full"
                         />
