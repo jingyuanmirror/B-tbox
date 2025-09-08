@@ -1,12 +1,18 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { CreateAppModalProps } from '@/types/app';
 import { useAppBuilder } from '@/hooks/useAppBuilder';
 import { industries } from '@/lib/appUtils';
 
 function CreateAppModalAdvanced({ isOpen, onClose, onSuccess }: CreateAppModalProps) {
+  const [mounted, setMounted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const {
     currentStep,
@@ -30,7 +36,7 @@ function CreateAppModalAdvanced({ isOpen, onClose, onSuccess }: CreateAppModalPr
     handleCancel
   } = useAppBuilder();
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const handleIconUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,8 +58,11 @@ function CreateAppModalAdvanced({ isOpen, onClose, onSuccess }: CreateAppModalPr
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  const modalContent = (
+    <div 
+      className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+    >
       <div className="bg-white rounded-lg max-w-5xl w-full h-[80vh] flex">
         {/* 左侧内容区域 */}
         <div className="flex-1 flex flex-col">
@@ -444,6 +453,8 @@ function CreateAppModalAdvanced({ isOpen, onClose, onSuccess }: CreateAppModalPr
       </div>
     </div>
   );
+  
+  return createPortal(modalContent, document.body);
 }
 
 export default CreateAppModalAdvanced;

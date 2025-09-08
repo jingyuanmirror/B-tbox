@@ -1,8 +1,7 @@
 'use client';
 
-import { Package, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Package, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 
@@ -42,7 +41,6 @@ const USAGE_ITEMS: UsageItem[] = [
 
 export function PackageUsageCard() {
   const overallUsage = 78; // 整体使用率
-  const hasHighUsageWarning = USAGE_ITEMS.some(item => (item.used / item.total) > 0.8);
   
   return (
     <Card className="relative overflow-hidden">
@@ -53,15 +51,6 @@ export function PackageUsageCard() {
         <Package className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* 整体使用率 */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-muted-foreground">整体使用率</span>
-            <span className="text-lg font-bold">{overallUsage}%</span>
-          </div>
-          <Progress value={overallUsage} className="h-2" />
-        </div>
-
         {/* 详细使用情况 */}
         <div className="space-y-3">
           {USAGE_ITEMS.map((item, index) => {
@@ -97,26 +86,6 @@ export function PackageUsageCard() {
             );
           })}
         </div>
-
-        {/* 预警提醒 */}
-        {hasHighUsageWarning && (
-          <div className="mt-3 p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
-            <div className="flex items-center space-x-2 mb-2">
-              <AlertTriangle className="h-3 w-3 text-orange-500" />
-              <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
-                Token使用率偏高，建议优化
-              </span>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm" className="text-xs h-6 px-2 border-orange-300 hover:bg-orange-100">
-                查看详情
-              </Button>
-              <Button variant="outline" size="sm" className="text-xs h-6 px-2 border-orange-300 hover:bg-orange-100">
-                优化建议
-              </Button>
-            </div>
-          </div>
-        )}
 
         {/* 趋势提示 */}
         <div className="flex items-center justify-between pt-1 border-t">

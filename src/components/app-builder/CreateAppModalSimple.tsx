@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import AgentOrchestrationPage from './AgentOrchestrationPage';
 
 interface CreateAppModalSimpleProps {
@@ -17,8 +18,13 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
   const [appDescription, setAppDescription] = useState('');
   const [appIcon, setAppIcon] = useState<File | null>(null);
   const [industry, setIndustry] = useState('');
+  const [mounted, setMounted] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const industries = [
     '科技互联网', '电商零售', '教育培训', '医疗健康', '金融投资', 
@@ -99,13 +105,19 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
   };
 
   // 如果模态框没有打开，不渲染任何内容
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
+  
+  // 调试：确认模态框已打开
+  console.log('CreateAppModalSimple is open:', isOpen, 'showOrchestration:', showOrchestration);
 
-  return (
+  const modalContent = (
     <>
       {/* 创建应用模态框 - 只在不显示编排页面时显示 */}
       {!showOrchestration && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+        >
       <div className="bg-white rounded-lg max-w-5xl w-full h-[80vh] flex">
         {/* 左侧内容区域 */}
         <div className="flex-1 flex flex-col">
@@ -484,6 +496,8 @@ function CreateAppModalSimple({ isOpen, onClose }: CreateAppModalSimpleProps) {
       />
     </>
   );
+  
+  return createPortal(modalContent, document.body);
 }
 
 export default CreateAppModalSimple;

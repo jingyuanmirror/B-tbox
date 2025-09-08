@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { DashboardPage } from "@/components/pages/DashboardPage";
 import { ServiceMarketPage } from "@/components/pages/ServiceMarketPage";
 import { PlaceholderPage } from "@/components/pages/PlaceholderPage";
+import { AIAssistant } from "@/components/pages/dashboard/AIAssistant";
 import {
   Bot,
   BarChart3,
@@ -94,6 +95,9 @@ export default function Home() {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+      
+      {/* AI Assistant - Only show on dashboard */}
+      {currentPage === "dashboard" && <AIAssistant />}
     </div>
   );
 }

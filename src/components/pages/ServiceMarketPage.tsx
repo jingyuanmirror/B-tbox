@@ -8,12 +8,20 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { PublishServiceModal } from '@/components/service-market/PublishServiceModal';
 import { useServiceStore } from '@/store/useServiceStore';
+import { usePageStore } from '@/store/usePageStore';
+import { useScrollHeader } from '@/hooks/useScrollHeader';
 
 export function ServiceMarketPage() {
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [activeTab, setActiveTab] = useState<ServiceType | 'all'>('all');
   const [isCompact, setIsCompact] = useState(false);
   const { addPublishedService } = useServiceStore();
+  const { setCurrentPageTitle } = usePageStore();
+  const { titleRef } = useScrollHeader();
+
+  useEffect(() => {
+    setCurrentPageTitle('服务市场');
+  }, [setCurrentPageTitle]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,7 +69,11 @@ export function ServiceMarketPage() {
       <div className="px-6 py-4 pb-1">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 
+              ref={titleRef}
+              className="text-3xl font-bold text-gray-900 dark:text-white"
+              data-page-title
+            >
               服务市场
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">

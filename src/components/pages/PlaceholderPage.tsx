@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { usePageStore } from '@/store/usePageStore';
+import { useScrollHeader } from '@/hooks/useScrollHeader';
 
 interface PlaceholderPageProps {
   title: string;
@@ -10,10 +13,21 @@ interface PlaceholderPageProps {
 }
 
 export function PlaceholderPage({ title, description, icon: Icon }: PlaceholderPageProps) {
+  const { setCurrentPageTitle } = usePageStore();
+  const { titleRef } = useScrollHeader();
+
+  useEffect(() => {
+    setCurrentPageTitle(title);
+  }, [title, setCurrentPageTitle]);
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 
+          ref={titleRef}
+          className="text-3xl font-bold text-gray-900 dark:text-white"
+          data-page-title
+        >
           {title}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
