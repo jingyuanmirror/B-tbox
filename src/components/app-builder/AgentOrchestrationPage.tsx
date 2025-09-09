@@ -259,14 +259,9 @@ function AgentOrchestrationPage({ isOpen, onClose, appName }: AgentOrchestration
             <div className="flex-1 overflow-hidden">
               {leftPanelMode === 'prompt' ? (
                 <SystemPromptPanel
-                  appName={appInfo.name}
-                  appDescription={appInfo.description}
-                  industry={appInfo.industry}
-                  hasPreCheck={false}
-                  hasFastDecision={false}
-                  skills={skills}
-                  onPromptChange={() => {
+                  onPromptChange={(prompt) => {
                     // Handle prompt changes if needed
+                    console.log('Prompt changed:', prompt);
                   }}
                 />
               ) : (
