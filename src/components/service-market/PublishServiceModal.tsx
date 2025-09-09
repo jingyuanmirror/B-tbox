@@ -393,11 +393,66 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
         return (
           <div>
             <h2 className="text-lg font-semibold mb-4">选择要上架的服务类型</h2>
-            <div className="flex gap-4 mb-6">
-              <Button onClick={() => { setFormData({ ...formData, type: 'plugin' }); setStep(Step.SelectSource); }}>插件服务</Button>
-              <Button onClick={() => { setFormData({ ...formData, type: 'mcp' }); setStep(Step.SelectSource); }}>MCP服务</Button>
-              <Button onClick={() => { setFormData({ ...formData, type: 'workflow' }); setStep(Step.SelectSource); }}>服务流模板</Button>
-              <Button onClick={() => { setFormData({ ...formData, type: 'code' }); setStep(Step.SelectSource); }}>代码服务模板</Button>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+              {/* 插件服务 */}
+              <div 
+                className="group p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 hover:shadow-md hover:bg-blue-50 active:scale-95"
+                onClick={() => { setFormData({ ...formData, type: 'plugin' }); setStep(Step.SelectSource); }}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-900">插件服务</h3>
+                </div>
+              </div>
+
+              {/* MCP服务 */}
+              <div 
+                className="group p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-200 hover:border-green-500 hover:shadow-md hover:bg-green-50 active:scale-95"
+                onClick={() => { setFormData({ ...formData, type: 'mcp' }); setStep(Step.SelectSource); }}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-8 h-8 bg-green-100 rounded-md flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                    <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-900">MCP服务</h3>
+                </div>
+              </div>
+
+              {/* 服务流模板 */}
+              <div 
+                className="group p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-500 hover:shadow-md hover:bg-purple-50 active:scale-95"
+                onClick={() => { setFormData({ ...formData, type: 'workflow' }); setStep(Step.SelectSource); }}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-8 h-8 bg-purple-100 rounded-md flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-900">服务流模板</h3>
+                </div>
+              </div>
+
+              {/* 代码服务模板 */}
+              <div 
+                className="group p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-500 hover:shadow-md hover:bg-orange-50 active:scale-95"
+                onClick={() => { setFormData({ ...formData, type: 'code' }); setStep(Step.SelectSource); }}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-8 h-8 bg-orange-100 rounded-md flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-900">代码服务模板</h3>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -1126,7 +1181,10 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent 
+        className="max-w-5xl w-[85vw] max-h-[90vh] overflow-y-auto"
+        style={{ maxWidth: '64rem', width: '85vw' }}
+      >
         <DialogHeader>
           <DialogTitle className="text-lg font-medium">服务上架</DialogTitle>
           <DialogDescription className="text-sm text-gray-600 leading-relaxed">分步完成服务上架流程，提升信息准确性和体验</DialogDescription>
