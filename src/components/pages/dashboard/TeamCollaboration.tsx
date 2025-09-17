@@ -143,7 +143,10 @@ export function TeamCollaboration({ className }: TeamCollaborationProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Rocket className="h-5 w-5 text-blue-600" />
-              <CardTitle>项目进度概览</CardTitle>
+              <CardTitle className="flex items-center space-x-2">
+                <span>📈 团队项目进度概览</span>
+                <span className="text-xs text-gray-500">- 🤖小智团队分析</span>
+              </CardTitle>
             </div>
             <div className="flex space-x-2">
               <Button
@@ -252,7 +255,10 @@ export function TeamCollaboration({ className }: TeamCollaborationProps) {
         <CardHeader>
           <div className="flex items-center space-x-2">
             <Activity className="h-5 w-5 text-green-600" />
-            <CardTitle>团队动态</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <span>👥 团队动态</span>
+              <span className="text-xs text-gray-500">- 🤖小智协作分析</span>
+            </CardTitle>
           </div>
         </CardHeader>
         <CardContent>

@@ -24,28 +24,28 @@ interface SmartMessage {
 const MESSAGE_CATEGORIES = {
   system: {
     icon: Wrench,
-    label: '系统通知',
+    label: '🔧 小智系统播报',
     color: 'text-blue-600',
     bgColor: 'bg-blue-50 dark:bg-blue-900/20',
     borderColor: 'border-blue-200 dark:border-blue-800'
   },
   ai: {
     icon: Bot,
-    label: '智能提醒',
+    label: '🤖 小智智能分析',
     color: 'text-purple-600',
     bgColor: 'bg-purple-50 dark:bg-purple-900/20',
     borderColor: 'border-purple-200 dark:border-purple-800'
   },
   business: {
     icon: Briefcase,
-    label: '业务消息',
+    label: '💼 小智财务助手',
     color: 'text-green-600',
     bgColor: 'bg-green-50 dark:bg-green-900/20',
     borderColor: 'border-green-200 dark:border-green-800'
   },
   feature: {
     icon: Sparkles,
-    label: '功能推荐',
+    label: '✨ 小智功能顾问',
     color: 'text-orange-600',
     bgColor: 'bg-orange-50 dark:bg-orange-900/20',
     borderColor: 'border-orange-200 dark:border-orange-800'
@@ -56,19 +56,19 @@ const MOCK_MESSAGES: SmartMessage[] = [
   {
     id: '1',
     category: 'ai',
-    title: 'Token使用率预警',
-    content: '您的Token使用率已达85%，预计6天后耗尽。建议优化智能体对话长度或升级套餐。',
+    title: '🤖小智紧急预警：Token使用率过高',
+    content: '小智检测到您的Token使用率已达85%，按当前使用速度预计6天后耗尽。小智建议：优化智能体对话长度，或考虑升级套餐。',
     timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30分钟前
     priority: 'high',
     isRead: false,
-    actionLabel: '查看优化建议',
-    onAction: () => console.log('查看优化建议')
+    actionLabel: '查看小智分析',
+    onAction: () => console.log('查看小智分析')
   },
   {
     id: '2',
     category: 'system',
-    title: '系统维护通知',
-    content: '系统将于今晚23:00-24:00进行例行维护，期间可能影响服务使用。',
+    title: '🔧小智系统播报：维护通知',
+    content: '小智提醒您：系统将于今晚23:00-24:00进行例行维护升级，期间可能影响服务使用，请提前做好准备。',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2小时前
     priority: 'medium',
     isRead: false
@@ -76,33 +76,46 @@ const MOCK_MESSAGES: SmartMessage[] = [
   {
     id: '3',
     category: 'business',
-    title: '月度账单已生成',
-    content: '您的1月份账单已生成，总费用¥2,847元。请及时查看费用明细。',
+    title: '💼小智财务助手：月度账单已生成',
+    content: '小智为您整理了1月份账单，总费用¥2,847元，比上月增长32%。主要增长原因：Token使用量增加48%。',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4), // 4小时前
     priority: 'medium',
     isRead: true,
-    actionLabel: '查看账单',
-    onAction: () => console.log('查看账单')
+    actionLabel: '查看详细分析',
+    onAction: () => console.log('查看详细分析')
   },
   {
     id: '4',
     category: 'feature',
-    title: '推荐：多轮对话插件',
-    content: '基于您的使用模式，推荐使用"多轮对话管理"插件，可提升用户交互体验30%。',
+    title: '✨小智功能顾问：推荐多轮对话插件',
+    content: '小智基于您的使用模式分析，推荐使用"多轮对话管理"插件。预期效果：用户交互体验提升30%，对话完成率提升25%。',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6), // 6小时前
     priority: 'low',
     isRead: true,
-    actionLabel: '了解更多',
-    onAction: () => console.log('了解更多')
+    actionLabel: '小智详细推荐',
+    onAction: () => console.log('小智详细推荐')
   },
   {
     id: '5',
     category: 'ai',
-    title: '异常调用检测',
-    content: '检测到您的"客服助手"智能体今日调用频率异常增高，请关注是否存在异常使用。',
+    title: '🤖小智智能分析：异常调用检测',
+    content: '小智检测到您的"客服助手"智能体今日调用频率异常增高(+340%)，小智建议检查是否存在异常使用或需要性能优化。',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8), // 8小时前
     priority: 'medium',
-    isRead: true
+    isRead: true,
+    actionLabel: '查看小智建议',
+    onAction: () => console.log('查看小智建议')
+  },
+  {
+    id: '6',
+    category: 'feature',
+    title: '📈小智市场分析师：热门趋势推送',
+    content: '小智发现酒店行业智能客服模板使用量激增+340%，基于您的客服场景，小智推荐关注"多语言客服"和"预订整合"功能。',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12小时前
+    priority: 'low',
+    isRead: true,
+    actionLabel: '查看市场分析',
+    onAction: () => console.log('查看市场分析')
   }
 ];
 
@@ -174,10 +187,10 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
             </div>
             <div>
               <CardTitle className="flex items-center space-x-2">
-                <span>智能消息中心</span>
+                <span>🤖智能消息中心</span>
               </CardTitle>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                由智能助手为您精选推送
+                小智智能推送为您精选推送
               </p>
             </div>
             {unreadCount > 0 && (

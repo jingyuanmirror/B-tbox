@@ -12,6 +12,9 @@ import { SmartMessageCenter } from './dashboard/SmartMessageCenter';
 import { LearningGrowth } from './dashboard/LearningGrowth';
 import { DataInsights } from './dashboard/DataInsights';
 import { TokenUsageWarning } from './dashboard/TokenUsageWarning';
+import { MarketHotRecommendations } from './dashboard/MarketHotRecommendations';
+import { SmartLearningGuidance } from './dashboard/SmartLearningGuidance';
+import { ValueInsights } from './dashboard/ValueInsights';
 
 // Import existing components for service sections
 import { Package } from 'lucide-react';
@@ -41,8 +44,9 @@ export function DashboardPage() {
           >
             智能工作台
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            欢迎回到百宝箱企业版，您的AI原生应用开发中心
+          <p className="text-gray-600 dark:text-gray-400 mt-2 flex items-center space-x-2">
+            <span>欢迎回到百宝箱企业版，您的AI原生应用开发中心</span>
+            <span className="text-sm">🤖小智为您提供智能化工作体验</span>
           </p>
         </div>
 
@@ -52,16 +56,22 @@ export function DashboardPage() {
         {/* Smart Stats Overview - 5个核心指标 */}
         <StatsOverview />
 
-        {/* Team Collaboration and Smart Message Center */}
+        {/* Market Hot Recommendations and Smart Message Center */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2">
-            <TeamCollaboration />
+            <MarketHotRecommendations />
           </div>
           <SmartMessageCenter />
         </div>
 
-        {/* Learning Growth */}
-        <LearningGrowth />
+        {/* Smart Learning Guidance - 分层指导策略 */}
+        <SmartLearningGuidance userLevel="beginner" />
+
+        {/* Team Collaboration */}
+        <TeamCollaboration />
+
+        {/* Value Insights - 价值洞察与市场分析 */}
+        <ValueInsights />
 
         {/* Data Insights */}
         <DataInsights />
