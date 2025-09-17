@@ -5,6 +5,7 @@ import { Bell, Settings, Wrench, Bot, Briefcase, Sparkles, Clock, MoreHorizontal
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 type MessageCategory = 'system' | 'ai' | 'business' | 'feature';
 
@@ -157,9 +158,28 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
     <Card className={className}>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Bell className="h-5 w-5 text-blue-600" />
-            <CardTitle>智能消息中心</CardTitle>
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <Bell className="h-5 w-5 text-blue-600" />
+              {/* AI助手小标识 */}
+              <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center">
+                <Image 
+                  src="/ai-assistant.svg" 
+                  alt="AI" 
+                  width={8} 
+                  height={8}
+                  className="filter brightness-0 invert"
+                />
+              </div>
+            </div>
+            <div>
+              <CardTitle className="flex items-center space-x-2">
+                <span>智能消息中心</span>
+              </CardTitle>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                由智能助手为您精选推送
+              </p>
+            </div>
             {unreadCount > 0 && (
               <Badge className="bg-red-500 text-white text-xs">
                 {unreadCount}

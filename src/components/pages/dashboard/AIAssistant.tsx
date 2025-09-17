@@ -5,6 +5,8 @@ import { Bot, X, Send, AlertCircle, Lightbulb, BookOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+import { AI_ASSISTANT_CONFIG } from '@/lib/aiAssistantConfig';
 
 interface AIMessage {
   type: 'system' | 'user' | 'assistant';
@@ -20,26 +22,7 @@ interface QuickAction {
   action: () => void;
 }
 
-const INITIAL_SUGGESTIONS: AIMessage[] = [
-  {
-    type: 'assistant',
-    content: '检测到您的Token使用率已达85%，建议优化智能体对话长度或考虑升级套餐。',
-    timestamp: new Date(),
-    category: 'warning'
-  },
-  {
-    type: 'assistant',
-    content: '根据您的使用模式，推荐学习"多轮对话设计"技能，可提升智能体交互效果30%。',
-    timestamp: new Date(),
-    category: 'suggestion'
-  },
-  {
-    type: 'assistant',
-    content: '您的客服智能体表现优秀！建议分享到服务市场，预计可获得额外收益。',
-    timestamp: new Date(),
-    category: 'analysis'
-  }
-];
+const INITIAL_SUGGESTIONS: AIMessage[] = AI_ASSISTANT_CONFIG.defaultMessages;
 
 const QUICK_ACTIONS: QuickAction[] = [
   {
@@ -128,19 +111,45 @@ export function AIAssistant({ className }: AIAssistantProps) {
   return (
     <div className={`fixed top-4 right-4 z-50 ${className}`}>
       {!isOpen ? (
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="h-12 w-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
-        >
-          <Bot className="h-6 w-6" />
-        </Button>
+        <div className="relative group">
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="h-16 w-16 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 p-0 group-hover:animate-pulse"
+          >
+            <div className="relative">
+              <Image 
+                src={AI_ASSISTANT_CONFIG.avatar.src}
+                alt={AI_ASSISTANT_CONFIG.avatar.alt}
+                width={AI_ASSISTANT_CONFIG.avatar.size.large}
+                height={AI_ASSISTANT_CONFIG.avatar.size.large}
+                className="filter brightness-0 invert"
+              />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></div>
+            </div>
+          </Button>
+        </div>
       ) : (
         <Card className="w-80 h-96 shadow-xl border-2 border-blue-200 dark:border-blue-800">
           <CardHeader className="pb-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-5 w-5" />
-                <CardTitle className="text-sm font-medium">AI 智能助手</CardTitle>
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Image 
+                    src="/ai-assistant.svg" 
+                    alt="AI Assistant" 
+                    width={24} 
+                    height={24}
+                    className="filter brightness-0 invert"
+                  />
+                </div>
+                <div>
+                  <CardTitle className="text-sm font-medium">AI 智能助手</CardTitle>
+                  <div className="flex items-center space-x-1 mt-1">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs opacity-90">在线为您服务</span>
+                  </div>
+                </div>
               </div>
               <Button
                 variant="ghost"
@@ -150,10 +159,6 @@ export function AIAssistant({ className }: AIAssistantProps) {
               >
                 <X className="h-4 w-4" />
               </Button>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs opacity-90">在线为您服务</span>
             </div>
           </CardHeader>
 
