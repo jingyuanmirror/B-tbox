@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { DashboardPage } from "@/components/pages/DashboardPage";
 import { ServiceMarketPage } from "@/components/pages/ServiceMarketPage";
+import { IndustryTemplatePage } from "@/components/pages/IndustryTemplatePage";
 import { PlaceholderPage } from "@/components/pages/PlaceholderPage";
 import { AIAssistant } from "@/components/pages/dashboard/AIAssistant";
 import {
@@ -25,6 +26,8 @@ export default function Home() {
         return <DashboardPage />;
       case "service-market":
         return <ServiceMarketPage />;
+      case "templates":
+        return <IndustryTemplatePage />;
       case "agents":
         return (
           <PlaceholderPage
