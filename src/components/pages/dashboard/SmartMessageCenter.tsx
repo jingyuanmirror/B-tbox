@@ -168,51 +168,53 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
   };
 
   return (
-    <Card className={className}>
-      <CardHeader>
+    <Card className={`border-0 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/20 dark:from-gray-800 dark:via-gray-800/90 dark:to-indigo-900/20 shadow-lg backdrop-blur-sm ${className}`}>
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="relative">
-              <Bell className="h-5 w-5 text-blue-600" />
+            <div className="relative p-2 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
+              <Bell className="h-4 w-4 text-white" />
               {/* AI助手小标识 */}
-              <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center">
+              <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center border border-white animate-pulse">
                 <Image 
                   src="/ai-assistant.svg" 
                   alt="AI" 
-                  width={8} 
-                  height={8}
+                  width={6} 
+                  height={6}
                   className="filter brightness-0 invert"
                 />
               </div>
             </div>
             <div>
-              <CardTitle className="flex items-center space-x-2">
-                <span>🤖智能消息中心</span>
+              <CardTitle className="flex items-center space-x-2 text-base">
+                <span className="bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent dark:from-white dark:to-blue-200">
+                  智能消息中心
+                </span>
+                {unreadCount > 0 && (
+                  <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-1.5 py-0.5 animate-bounce">
+                    {unreadCount}
+                  </Badge>
+                )}
               </CardTitle>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                小智智能推送为您精选推送
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                🤖小智智能推送精选消息
               </p>
             </div>
-            {unreadCount > 0 && (
-              <Badge className="bg-red-500 text-white text-xs">
-                {unreadCount}
-              </Badge>
-            )}
           </div>
-          <Button variant="ghost" size="sm">
-            <Settings className="h-4 w-4" />
+          <Button variant="ghost" size="sm" className="h-7 w-7 p-0 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-full">
+            <Settings className="h-3.5 w-3.5" />
           </Button>
         </div>
       </CardHeader>
       
-      <CardContent>
-        {/* 消息分类筛选 */}
-        <div className="flex space-x-2 mb-4 overflow-x-auto">
+      <CardContent className="pt-0">
+        {/* 紧凑的消息分类筛选 */}
+        <div className="flex space-x-1.5 mb-4 overflow-x-auto scrollbar-hide">
           <Button
             variant={selectedCategory === 'all' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setSelectedCategory('all')}
-            className="text-xs whitespace-nowrap"
+            className="text-xs whitespace-nowrap px-2.5 py-1 h-6"
           >
             全部
           </Button>
@@ -241,51 +243,49 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
           })}
         </div>
 
-        {/* 消息列表 */}
-        <div className="space-y-3 max-h-96 overflow-y-auto">
-          {filteredMessages.map((message) => {
+        {/* 紧凑的消息列表 */}
+        <div className="space-y-2 max-h-80 overflow-y-auto custom-scrollbar">
+          {filteredMessages.slice(0, 4).map((message, index) => {
             const categoryConfig = MESSAGE_CATEGORIES[message.category];
             const Icon = categoryConfig.icon;
             
             return (
               <div
                 key={message.id}
-                className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-sm cursor-pointer ${
+                className={`group p-3 rounded-lg border transition-all duration-200 hover:shadow-md cursor-pointer backdrop-blur-sm ${
                   message.isRead 
-                    ? 'bg-gray-50 dark:bg-gray-900/50 opacity-75' 
-                    : `${categoryConfig.bgColor} ${categoryConfig.borderColor}`
+                    ? 'bg-gray-50/80 dark:bg-gray-800/50 opacity-75' 
+                    : 'bg-white/80 dark:bg-gray-700/60 hover:bg-white/95 dark:hover:bg-gray-700/80'
                 }`}
                 onClick={() => !message.isRead && markAsRead(message.id)}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-start space-x-3">
-                  <div className={`p-1 rounded ${categoryConfig.bgColor}`}>
+                  <div className={`p-1.5 rounded-full ${categoryConfig.bgColor} group-hover:scale-110 transition-transform`}>
                     <Icon className={`h-3 w-3 ${categoryConfig.color}`} />
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center space-x-2">
-                        <h4 className={`font-medium text-sm ${!message.isRead ? 'font-semibold' : ''}`}>
+                        <h4 className={`text-sm ${!message.isRead ? 'font-semibold text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'} group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors`}>
                           {message.title}
                         </h4>
                         {!message.isRead && (
-                          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                          <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full animate-pulse"></div>
                         )}
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1">
                         {getPriorityBadge(message.priority)}
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <MoreHorizontal className="h-3 w-3" />
-                        </Button>
                       </div>
                     </div>
                     
-                    <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 line-clamp-2">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 line-clamp-2 leading-relaxed">
                       {message.content}
                     </p>
                     
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                      <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                         <Clock className="h-3 w-3" />
                         <span>{formatTimestamp(message.timestamp)}</span>
                       </div>
@@ -298,7 +298,7 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
                             e.stopPropagation();
                             message.onAction?.();
                           }}
-                          className="text-xs h-6 px-2"
+                          className="text-xs h-6 px-2.5 border-blue-200 hover:bg-blue-50 hover:border-blue-300 dark:border-blue-700 dark:hover:bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-all duration-200"
                         >
                           {message.actionLabel}
                         </Button>
@@ -312,9 +312,20 @@ export function SmartMessageCenter({ className }: SmartMessageCenterProps) {
         </div>
 
         {filteredMessages.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <div className="text-center py-6 text-muted-foreground">
+            <div className="p-3 rounded-full bg-gray-100 dark:bg-gray-800 w-fit mx-auto mb-2">
+              <Bell className="h-6 w-6 opacity-50" />
+            </div>
             <p className="text-sm">暂无消息</p>
+            <p className="text-xs text-gray-500 mt-1">小智会为您推送重要信息</p>
+          </div>
+        )}
+        
+        {filteredMessages.length > 4 && (
+          <div className="mt-4 pt-3 border-t border-gray-200/50 dark:border-gray-600/30">
+            <Button variant="ghost" size="sm" className="w-full text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+              查看全部 {filteredMessages.length} 条消息 →
+            </Button>
           </div>
         )}
       </CardContent>

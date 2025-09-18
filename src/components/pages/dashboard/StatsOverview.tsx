@@ -96,42 +96,58 @@ export function StatsOverview({ className }: StatsOverviewProps) {
   };
 
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 ${className}`}>
+    <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 ${className}`}>
       {BASIC_STATS.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="relative overflow-hidden group hover:shadow-md transition-shadow">
+          <Card 
+            key={index} 
+            className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700/50 shadow-md backdrop-blur-sm"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-indigo-500/5 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-500"></div>
+            
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {stat.title}
               </CardTitle>
-              <div className="flex items-center space-x-1">
-                {stat.hasAlert && getAlertIcon(stat.alertType)}
-                <Icon className={`h-4 w-4 ${stat.color}`} />
-                {/* AI助手入口 */}
+              <div className="flex items-center space-x-1 relative z-10">
+                {stat.hasAlert && (
+                  <div className="animate-pulse">
+                    {getAlertIcon(stat.alertType)}
+                  </div>
+                )}
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-white to-gray-100 dark:from-gray-700 dark:to-gray-600 shadow-inner">
+                  <Icon className={`h-4 w-4 ${stat.color}`} />
+                </div>
+                {/* AI助手入口 - Enhanced */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-full"
                   title="🤖小智分析"
                 >
-                  <span className="text-xs">🤖</span>
+                  <span className="text-xs animate-bounce">🤖</span>
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
-                <span>{getTrendIcon(stat.trend)}</span>
-                <span>{stat.change}</span>
+            
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent dark:from-white dark:to-gray-200 mb-1">
+                {stat.value}
+              </div>
+              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                <span className="text-base">{getTrendIcon(stat.trend)}</span>
+                <span className="font-medium">{stat.change}</span>
                 <span className="text-gray-400">•</span>
                 <span>{stat.subtitle}</span>
               </div>
               
-              {/* AI洞察提示 - hover显示 */}
+              {/* AI洞察提示 - Enhanced hover card */}
               {stat.aiInsight && (
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-white to-transparent dark:from-gray-800 dark:to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform translate-y-full group-hover:translate-y-0">
-                  <div className="text-xs text-gray-600 dark:text-gray-300 p-2 bg-white dark:bg-gray-800 rounded border shadow-sm">
+                <div className="absolute inset-x-2 bottom-2 bg-gradient-to-t from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 rounded-lg shadow-xl border border-blue-200/50 dark:border-blue-700/50">
+                  <div className="text-xs text-gray-600 dark:text-gray-300 p-2 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-lg border border-blue-100 dark:border-blue-800/50 shadow-sm">
                     {stat.aiInsight}
                   </div>
                 </div>
@@ -141,8 +157,10 @@ export function StatsOverview({ className }: StatsOverviewProps) {
         );
       })}
       
-      {/* 套餐使用情况 - 特殊组件 */}
-      <PackageUsageCard />
+      {/* 套餐使用情况 - Enhanced Design */}
+      <div className="relative">
+        <PackageUsageCard />
+      </div>
     </div>
   );
 }

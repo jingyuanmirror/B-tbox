@@ -136,24 +136,30 @@ export function TeamCollaboration({ className }: TeamCollaborationProps) {
   };
 
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${className}`}>
-      {/* 项目进度概览 */}
-      <Card>
-        <CardHeader>
+    <div className={`${className}`}>
+      {/* Single Enhanced Card with Compact Layout */}
+      <Card className="border-0 bg-gradient-to-br from-white via-gray-50/50 to-blue-50/30 dark:from-gray-800 dark:via-gray-800/80 dark:to-gray-700/50 shadow-lg backdrop-blur-sm">
+        <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Rocket className="h-5 w-5 text-blue-600" />
-              <CardTitle className="flex items-center space-x-2">
-                <span>📈 团队项目进度概览</span>
-                <span className="text-xs text-gray-500">- 🤖小智团队分析</span>
-              </CardTitle>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
+                <Rocket className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="flex items-center space-x-2 text-lg">
+                  <span className="bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent dark:from-white dark:to-blue-200">
+                    团队协作中心
+                  </span>
+                </CardTitle>
+                <p className="text-sm text-gray-600 dark:text-gray-400">🤖小智智能团队分析</p>
+              </div>
             </div>
             <div className="flex space-x-2">
               <Button
                 variant={activeTab === 'projects' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setActiveTab('projects')}
-                className="text-xs"
+                className="text-xs px-3 py-1 h-7"
               >
                 项目
               </Button>
@@ -161,153 +167,116 @@ export function TeamCollaboration({ className }: TeamCollaborationProps) {
                 variant={activeTab === 'team' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setActiveTab('team')}
-                className="text-xs"
+                className="text-xs px-3 py-1 h-7"
               >
                 团队
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        
+        <CardContent className="space-y-4">
           {activeTab === 'projects' ? (
-            <div className="space-y-4">
-              {MOCK_PROJECTS.map((project) => (
-                <div key={project.id} className="border rounded-lg p-4 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        {getStatusIcon(project.status)}
-                        <h4 className="font-medium text-sm">{project.name}</h4>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        {project.description}
-                      </p>
-                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                        <span>负责人：{project.owner}</span>
-                        <span>预计完成：{project.dueDate}</span>
-                      </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {MOCK_PROJECTS.slice(0, 4).map((project, index) => (
+                <div 
+                  key={project.id} 
+                  className="group p-4 rounded-xl bg-white/60 dark:bg-gray-700/50 border border-gray-200/50 dark:border-gray-600/30 hover:shadow-md transition-all duration-200 backdrop-blur-sm"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2 flex-1">
+                      {getStatusIcon(project.status)}
+                      <h4 className="font-medium text-sm text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {project.name}
+                      </h4>
                     </div>
                     {getStatusBadge(project.status)}
                   </div>
 
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-1">
+                    {project.description}
+                  </p>
+
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span>进度</span>
-                      <span>{project.progress}%</span>
+                      <span className="text-gray-600 dark:text-gray-400">进度</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{project.progress}%</span>
                     </div>
-                    <Progress value={project.progress} className="h-1.5" />
+                    <Progress value={project.progress} className="h-2 bg-gray-200 dark:bg-gray-600" />
                   </div>
 
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-3 pt-2 border-t border-gray-200/50 dark:border-gray-600/30">
                     <div className="flex items-center space-x-2">
                       <Target className="h-3 w-3" />
-                      <span>任务：{project.tasks.completed}/{project.tasks.total}</span>
+                      <span>{project.tasks.completed}/{project.tasks.total}</span>
                     </div>
-                    {project.risksCount > 0 && (
-                      <div className="flex items-center space-x-1 text-orange-600">
-                        <AlertTriangle className="h-3 w-3" />
-                        <span>{project.risksCount} 个风险</span>
-                      </div>
-                    )}
+                    <span>{project.owner}</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="space-y-3">
-              {MOCK_TEAM_MEMBERS.map((member) => (
-                <div key={member.id} className="flex items-center space-x-3 p-3 border rounded-lg">
-                  <div className="relative">
-                    <div className="text-lg">{member.avatar}</div>
-                    {member.isOnline && (
-                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h4 className="font-medium text-sm">{member.name}</h4>
-                      <Badge variant="outline" className="text-xs">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {MOCK_TEAM_MEMBERS.slice(0, 6).map((member, index) => (
+                <div 
+                  key={member.id} 
+                  className="group p-3 rounded-lg bg-white/60 dark:bg-gray-700/50 border border-gray-200/50 dark:border-gray-600/30 hover:shadow-md transition-all duration-200"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="relative">
+                      <div className="text-lg">{member.avatar}</div>
+                      {member.isOnline && (
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">
+                        {member.name}
+                      </h4>
+                      <Badge variant="outline" className="text-xs mt-1">
                         {member.role}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-1">
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
                       {member.recentActivity}
                     </p>
-                    <div className="flex items-center space-x-2">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span>工作负载</span>
-                          <span>{member.workload}%</span>
-                        </div>
-                        <Progress value={member.workload} className="h-1" />
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-gray-600 dark:text-gray-400">负载</span>
+                        <span className="font-medium text-gray-900 dark:text-white">{member.workload}%</span>
                       </div>
+                      <Progress value={member.workload} className="h-1.5 bg-gray-200 dark:bg-gray-600" />
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
-
-      {/* 最近团队活动 */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center space-x-2">
-            <Activity className="h-5 w-5 text-green-600" />
-            <CardTitle className="flex items-center space-x-2">
-              <span>👥 团队动态</span>
-              <span className="text-xs text-gray-500">- 🤖小智协作分析</span>
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-              <div className="flex-1">
-                <p className="text-sm">
-                  <span className="font-medium">张三</span> 更新了酒店客服项目进度至80%
-                </p>
-                <p className="text-xs text-muted-foreground">2小时前</p>
+          
+          {/* Quick Stats Bar */}
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-gray-200/50 dark:border-gray-600/30">
+            <div className="flex items-center space-x-6 text-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="text-gray-600 dark:text-gray-400">3个项目正常</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                <span className="text-gray-600 dark:text-gray-400">1个项目有风险</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span className="text-gray-600 dark:text-gray-400">18名活跃成员</span>
               </div>
             </div>
-            
-            <div className="flex items-start space-x-3">
-              <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-              <div className="flex-1">
-                <p className="text-sm">
-                  <span className="font-medium">李四</span> 完成了景区导览UI设计稿
-                </p>
-                <p className="text-xs text-muted-foreground">4小时前</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start space-x-3">
-              <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-              <div className="flex-1">
-                <p className="text-sm">
-                  <span className="font-medium">王五</span> 部署了企业内训机器人测试环境
-                </p>
-                <p className="text-xs text-muted-foreground">6小时前</p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-              <div className="flex-1">
-                <p className="text-sm">
-                  系统检测到 <span className="font-medium">酒店客服项目</span> 存在延期风险
-                </p>
-                <p className="text-xs text-muted-foreground">8小时前</p>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t">
-              <Button variant="outline" size="sm" className="w-full text-xs">
-                查看更多团队活动
-              </Button>
-            </div>
+            <Button variant="ghost" size="sm" className="text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+              查看详情 →
+            </Button>
           </div>
         </CardContent>
       </Card>
