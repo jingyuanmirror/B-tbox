@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useServiceStore } from '@/store/useServiceStore';
 import { usePageStore } from '@/store/usePageStore';
 import { useScrollHeader } from '@/hooks/useScrollHeader';
@@ -61,11 +61,28 @@ export function DashboardPage() {
   const { titleRef } = useScrollHeader();
   const [currentUserType, setCurrentUserType] = useState<UserType>('developer');
   const [showUserTypeSelector, setShowUserTypeSelector] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Set page title when component mounts
   useEffect(() => {
     setCurrentPageTitle('智能工作台');
   }, [setCurrentPageTitle]);
+
+  // Handle click outside dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowUserTypeSelector(false);
+      }
+    }
+
+    if (showUserTypeSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showUserTypeSelector]);
 
   // 获取当前用户类型配置
   const currentUserConfig = USER_TYPES.find(type => type.id === currentUserType) || USER_TYPES[0];
@@ -94,10 +111,10 @@ export function DashboardPage() {
     <div className="relative min-h-screen bg-gradient-to-br from-slate-50/50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-slate-800/30">
       <div className="space-y-6">
         {/* Enhanced Page Header with Glass Effect and User Type Selector */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-visible">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 rounded-xl"></div>
-          <div className="relative p-6 backdrop-blur-sm border border-white/20 rounded-xl bg-white/60 dark:bg-gray-900/60 shadow-lg shadow-blue-500/5">
-            <div className="flex items-start justify-between">
+          <div className="relative p-6 backdrop-blur-sm border border-white/20 rounded-xl bg-white/60 dark:bg-gray-900/60 shadow-lg shadow-blue-500/5 overflow-visible">
+            <div className="flex items-start justify-between overflow-visible">
               <div className="flex-1">
                 <h1 
                   ref={titleRef}
@@ -117,7 +134,7 @@ export function DashboardPage() {
               </div>
               
               {/* 用户类型切换器 */}
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <Button
                   variant="outline"
                   onClick={() => setShowUserTypeSelector(!showUserTypeSelector)}
@@ -128,63 +145,28 @@ export function DashboardPage() {
                   <ChevronDown className={`h-4 w-4 transition-transform ${showUserTypeSelector ? 'rotate-180' : ''}`} />
                 </Button>
                 
-                {/* 用户类型选择下拉框 */}
+                {/* 用户类型选择下拉框 - 简化版本 */}
                 {showUserTypeSelector && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 backdrop-blur-sm">
-                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">选择用户类型</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">切换角色查看不同的个性化界面</p>
-                    </div>
-                    <div className="p-2 space-y-1">
-                      {USER_TYPES.map((userType) => (
-                        <button
-                          key={userType.id}
-                          onClick={() => {
-                            setCurrentUserType(userType.id);
-                            setShowUserTypeSelector(false);
-                          }}
-                          className={`w-full text-left p-3 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 ${
-                            currentUserType === userType.id ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700' : ''
-                          }`}
-                        >
-                          <div className="flex items-start space-x-3">
-                            <userType.icon className={`h-5 w-5 mt-0.5 ${
-                              currentUserType === userType.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'
-                            }`} />
-                            <div className="flex-1">
-                              <h4 className={`font-medium ${
-                                currentUserType === userType.id ? 'text-blue-900 dark:text-blue-100' : 'text-gray-900 dark:text-white'
-                              }`}>
-                                {userType.name}
-                              </h4>
-                              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
-                                {userType.description}
-                              </p>
-                              <div className="flex flex-wrap gap-1 mt-2">
-                                {userType.features.slice(0, 3).map((feature) => (
-                                  <span
-                                    key={feature}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      currentUserType === userType.id
-                                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-800/30 dark:text-blue-300'
-                                        : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                                    }`}
-                                  >
-                                    {feature}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                    <div className="p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 rounded-b-xl">
-                      <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
-                        <Bot className="h-3 w-3" />
-                        <span>🤖小智会根据您的选择提供个性化内容</span>
-                      </div>
-                    </div>
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-[99999] py-2">
+                    {USER_TYPES.map((userType) => (
+                      <button
+                        key={userType.id}
+                        onClick={() => {
+                          setCurrentUserType(userType.id);
+                          setShowUserTypeSelector(false);
+                        }}
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                          currentUserType === userType.id ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <userType.icon className={`h-4 w-4 ${
+                            currentUserType === userType.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'
+                          }`} />
+                          <span className="font-medium">{userType.name}</span>
+                        </div>
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
@@ -390,57 +372,6 @@ export function DashboardPage() {
           </div>
         )}
       </div>
-
-      {/* PRD对比说明 - 开发模式下显示 */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-          <div className="flex items-start space-x-3">
-            <div className="p-2 rounded-lg bg-yellow-500 text-white">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-                PRD实现对比说明（开发模式）
-              </h3>
-              <div className="space-y-4 text-sm text-yellow-700 dark:text-yellow-300">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-medium mb-2">✅ 已按PRD实现：</h4>
-                    <ul className="space-y-1 text-xs">
-                      <li>• 智能仪表盘指标区域（5个核心指标）</li>
-                      <li>• AI助手"小智"形象透出</li>
-                      <li>• 智能消息中心（分类推送）</li>
-                      <li>• 市场热门推荐（行业趋势）</li>
-                      <li>• 用户类型切换（3种角色）</li>
-                      <li>• 分层功能引导</li>
-                      <li>• 社区协作动态</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium mb-2">🔄 已修正问题：</h4>
-                    <ul className="space-y-1 text-xs">
-                      <li>• 将"团队协作"改为"社区协作动态"</li>
-                      <li>• 将"学习成长"改为"智能功能引导"</li>
-                      <li>• 增加小智形象一致性透出</li>
-                      <li>• 根据用户类型显示不同组件</li>
-                      <li>• 强化个性化推荐和分析</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                  <p className="text-xs">
-                    <strong>当前用户角色：{currentUserConfig.name}</strong> - 
-                    页面会根据不同角色显示相应的功能模块，体现个性化体验。
-                    切换右上角的用户类型可查看不同角色的专属界面。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
