@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Bot, 
-  Users, 
   CreditCard, 
   Activity,
   TrendingUp,
@@ -45,12 +44,7 @@ const mockStats = {
     growth: 9.8,
     anomalyDetected: false
   },
-  teamMembers: {
-    total: 12,
-    active: 9,
-    roles: { admin: 2, developer: 4, user: 6 },
-    activeRate: 75
-  },
+
   cost: {
     currentMonth: 2856.80,
     dailyAvg: 95.23,
@@ -312,18 +306,6 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
           color="green"
           anomaly={mockStats.dau.anomalyDetected}
           onAIClick={() => setShowAIAnalysis(showAIAnalysis === 'dau' ? null : 'dau')}
-        />
-
-        {/* 团队成员数 */}
-        <StatCard
-          icon={Users}
-          title="团队成员"
-          value={mockStats.teamMembers.total}
-          subtitle={`活跃 ${mockStats.teamMembers.active} 人`}
-          trend="up"
-          trendValue={`${mockStats.teamMembers.activeRate}% 活跃`}
-          color="purple"
-          onAIClick={() => setShowAIAnalysis(showAIAnalysis === 'team' ? null : 'team')}
         />
 
         {/* 费用消耗 */}

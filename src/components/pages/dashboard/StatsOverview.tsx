@@ -1,6 +1,6 @@
 'use client';
 
-import { Bot, Users, TrendingUp, DollarSign, AlertTriangle, Info } from 'lucide-react';
+import { Bot, TrendingUp, DollarSign, AlertTriangle, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -39,16 +39,6 @@ const BASIC_STATS: StatItem[] = [
     color: 'text-green-600 dark:text-green-400',
     trend: 'up',
     aiInsight: '🤖小智分析：DAU稳步增长，用户粘性较好，建议优化高频使用场景的响应速度'
-  },
-  {
-    title: '团队成员',
-    value: '23',
-    change: '18',
-    subtitle: '活跃成员',
-    icon: Users,
-    color: 'text-purple-600 dark:text-purple-400',
-    trend: 'stable',
-    aiInsight: '🤖小智分析：团队协作活跃度良好，78%成员参与智能体创建和维护'
   },
   {
     title: '费用消耗',
