@@ -211,9 +211,6 @@ export function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 左侧列 */}
           <div className="lg:col-span-2 space-y-8">
-            {/* 最近操作记录 */}
-            <RecentOperations userType={userType} userData={userData} />
-            
             {/* 分层功能引导 - 根据用户类型显示不同指导 */}
             {userType === 'newbie' && (
               <SmartLearningGuidance 
@@ -391,6 +388,9 @@ export function DashboardPage() {
 
           {/* 右侧列 */}
           <div className="space-y-8">
+            {/* 操作记录 */}
+            <RecentOperations userType={userType} userData={userData} />
+            
             {/* 智能消息中心 - 功能正常，SmartMessageCenter组件待修复 */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="flex items-center gap-2 mb-4">
