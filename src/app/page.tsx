@@ -7,7 +7,6 @@ import { DashboardPage } from "@/components/pages/DashboardPage";
 import { ServiceMarketPage } from "@/components/pages/ServiceMarketPage";
 import { IndustryTemplatePage } from "@/components/pages/IndustryTemplatePage";
 import { PlaceholderPage } from "@/components/pages/PlaceholderPage";
-import { AIAssistant } from "@/components/pages/dashboard/AIAssistant";
 import { AIWelcomeTooltip } from "@/components/pages/dashboard/AIWelcomeTooltip";
 import {
   Bot,
@@ -100,9 +99,6 @@ export default function Home() {
         />
       )}
       
-      {/* AI Assistant - Show on all pages but adjust position */}
-      <AIAssistant />
-
       {/* AI Welcome Tooltip - Show on first visit */}
       <AIWelcomeTooltip />
     </div>
