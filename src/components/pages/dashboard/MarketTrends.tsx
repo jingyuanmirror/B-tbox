@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 // 用户类型定义
-export type UserType = 'pure-new' | 'newbie' | 'advanced' | 'expert';
+export type UserType = 'pure-new' | 'newbie' | 'advanced' | 'expert' | 'isv';
 
 interface UserData {
   agentCount: number;

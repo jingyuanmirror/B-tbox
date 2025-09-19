@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 // 用户类型定义
-export type UserType = 'pure-new' | 'newbie' | 'advanced' | 'expert';
+export type UserType = 'pure-new' | 'newbie' | 'advanced' | 'expert' | 'isv';
 
 interface UserData {
   agentCount: number;
@@ -51,6 +51,11 @@ interface OperationRecord {
     satisfaction?: number;
     improvement?: string;
     cost?: string;
+    clientCount?: number;
+    profitMargin?: string;
+    templatesCount?: number;
+    industryDemand?: string;
+    accuracy?: string;
   };
 }
 
@@ -162,6 +167,66 @@ const generateOperationsForUser = (userType: UserType, userData: UserData): Oper
           status: 'success',
           metrics: {
             improvement: 'ROI提升235%'
+          }
+        }
+      ];
+
+    case 'isv':
+      return [
+        {
+          id: '1',
+          type: 'agent',
+          action: '部署',
+          target: '客户A-酒店智能体集群',
+          timestamp: new Date(Date.now() - 30 * 60 * 1000),
+          description: '为5家连锁酒店批量部署客服智能体',
+          aiSuggestion: '🤖 AI建议：可推荐预订管理插件，预计客户付费意愿85%',
+          status: 'success',
+          metrics: {
+            clientCount: 5,
+            satisfaction: 4.7,
+            improvement: '交付时间缩短60%'
+          }
+        },
+        {
+          id: '2',
+          type: 'analytics',
+          action: '生成',
+          target: '客户B项目盈利分析报告',
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+          description: '🤖 AI成本智能分析：利润率达32%',
+          aiSuggestion: '建议调整定价策略，可提升15%利润空间',
+          status: 'success',
+          metrics: {
+            profitMargin: '32%',
+            improvement: '成本优化15%'
+          }
+        },
+        {
+          id: '3',
+          type: 'template',
+          action: '打包',
+          target: '教育行业解决方案',
+          timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
+          description: '标准化交付模板，覆盖K12和高等教育',
+          aiSuggestion: '🤖 市场分析：教育行业需求增长40%，建议重点推广',
+          status: 'success',
+          metrics: {
+            templatesCount: 8,
+            industryDemand: '+40%'
+          }
+        },
+        {
+          id: '4',
+          type: 'plugin',
+          action: '集成',
+          target: '客户用量预测模型',
+          timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
+          description: '为精准报价开发预测工具',
+          status: 'success',
+          metrics: {
+            accuracy: '92%',
+            improvement: '报价准确率提升25%'
           }
         }
       ];
