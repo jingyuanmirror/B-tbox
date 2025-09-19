@@ -190,71 +190,71 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
 
   const TrendingServiceCard = ({ service, industryIcon }: { service: any; industryIcon: string }) => (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 transition-all">
-      <div className="flex items-start justify-between mb-3">
+    <div className="p-3 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-750 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-md transition-all">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
-          <span className="text-lg">{industryIcon}</span>
-          <h4 className="font-medium text-gray-900 dark:text-white">{service.name}</h4>
+          <span className="text-base">{industryIcon}</span>
+          <h4 className="font-medium text-sm text-gray-900 dark:text-white line-clamp-1">{service.name}</h4>
+          <div className="flex items-center space-x-1 text-green-600 text-xs font-medium bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
+            <TrendingUp className="w-3 h-3" />
+            +{service.growth}%
+          </div>
         </div>
-        <div className="flex items-center space-x-1 text-green-600 text-sm font-medium">
-          <TrendingUp className="w-4 h-4" />
-          +{service.growth}%
-        </div>
+        <Button size="sm" variant="outline" className="h-6 px-2 text-xs">
+          试用
+        </Button>
       </div>
       
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
         💡 {service.description}
       </p>
       
-      <div className="text-xs text-blue-600 dark:text-blue-400 mb-3">
-        🎯 适合：{service.suitableFor}
-      </div>
-      
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-        <span>{service.users}人使用</span>
-        <Button size="sm" variant="outline" className="h-6 text-xs">
-          立即试用
-        </Button>
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">
+          🎯 {service.suitableFor}
+        </span>
+        <span className="text-gray-500 dark:text-gray-400">
+          {service.users}人使用
+        </span>
       </div>
     </div>
   );
 
   const SuccessCaseCard = ({ case: successCase }: { case: typeof SUCCESS_CASES[0] }) => (
-    <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl border border-green-200 dark:border-green-800">
-      <div className="flex items-start space-x-4 mb-4">
-        <div className="text-2xl">{successCase.icon}</div>
+    <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl border border-green-200 dark:border-green-800 hover:shadow-lg transition-all">
+      <div className="flex items-start space-x-3 mb-3">
+        <div className="text-xl">{successCase.icon}</div>
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-1">
-            <h3 className="font-semibold text-gray-900 dark:text-white">
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
               {successCase.company}
             </h3>
             {successCase.verified && (
-              <Badge className="bg-green-500 text-white text-xs">
-                ✓ 已验证
+              <Badge className="bg-green-500 text-white text-xs px-1.5 py-0.5">
+                ✓
               </Badge>
             )}
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-xs text-gray-600 dark:text-gray-400">
             {successCase.industry}行业 · {successCase.solution}
           </p>
         </div>
       </div>
       
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        {Object.entries(successCase.results).map(([key, value]) => (
-          <div key={key} className="text-sm">
-            <span className="text-gray-600 dark:text-gray-400">📊 </span>
-            <span className="text-gray-900 dark:text-white">{value}</span>
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        {Object.entries(successCase.results).slice(0, 4).map(([key, value]) => (
+          <div key={key} className="text-xs bg-white/50 dark:bg-gray-800/50 rounded p-2">
+            <div className="text-green-600 dark:text-green-400 font-medium">{value}</div>
           </div>
         ))}
       </div>
       
       {successCase.recommendation && (
-        <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-          <div className="flex items-start space-x-2">
-            <span className="text-sm">🤖</span>
-            <p className="text-sm text-blue-800 dark:text-blue-200">
-              <strong>AI建议：</strong>{successCase.recommendation}
+        <div className="p-2 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-start space-x-1">
+            <span className="text-xs">🤖</span>
+            <p className="text-xs text-blue-800 dark:text-blue-200 line-clamp-2">
+              {successCase.recommendation}
             </p>
           </div>
         </div>
@@ -264,34 +264,34 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
 
   const HotAppCard = ({ app }: { app: typeof HOT_APPLICATIONS[0] }) => (
     <Card className="hover:shadow-lg transition-all duration-200">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="text-2xl">{app.icon}</div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <CardTitle className="text-base font-semibold">
+          <div className="flex items-center space-x-2">
+            <div className="text-xl">{app.icon}</div>
+            <div className="flex-1">
+              <div className="flex items-center space-x-1 mb-1">
+                <CardTitle className="text-sm font-semibold">
                   {app.name}
                 </CardTitle>
                 {app.trending && (
-                  <Badge className="bg-red-500 text-white text-xs">
-                    🔥 热门
+                  <Badge className="bg-red-500 text-white text-xs px-1.5 py-0.5">
+                    🔥
                   </Badge>
                 )}
                 {app.aiRecommended && (
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
-                    🤖 AI推荐
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs px-1.5 py-0.5">
+                    🤖
                   </Badge>
                 )}
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 {app.category}
               </p>
             </div>
           </div>
           <div className="text-right">
-            <div className="font-semibold text-green-600">{app.price}</div>
-            <div className="flex items-center text-xs text-gray-500 mt-1">
+            <div className="font-semibold text-green-600 text-sm">{app.price}</div>
+            <div className="flex items-center text-xs text-gray-500 mt-0.5">
               <Star className="w-3 h-3 text-yellow-500 mr-1" />
               {app.rating} ({app.reviews})
             </div>
@@ -299,37 +299,37 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
         </div>
       </CardHeader>
       
-      <CardContent className="pt-0">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+      <CardContent className="pt-0 space-y-3">
+        <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
           {app.description}
         </p>
         
-        <div className="mb-4">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">核心功能：</div>
+        <div>
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">核心功能：</div>
           <div className="flex flex-wrap gap-1">
             {app.features.slice(0, 3).map((feature) => (
-              <Badge key={feature} variant="outline" className="text-xs">
+              <Badge key={feature} variant="outline" className="text-xs px-1.5 py-0.5">
                 {feature}
               </Badge>
             ))}
             {app.features.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{app.features.length - 3}更多
+              <Badge variant="outline" className="text-xs px-1.5 py-0.5">
+                +{app.features.length - 3}
               </Badge>
             )}
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pt-1">
           <span className="text-xs text-gray-500">
             {app.usageCount.toLocaleString()}人使用
           </span>
-          <div className="space-x-2">
-            <Button size="sm" variant="outline" className="h-7 text-xs">
-              查看详情
+          <div className="space-x-1">
+            <Button size="sm" variant="outline" className="h-6 px-2 text-xs">
+              详情
             </Button>
-            <Button size="sm" className="h-7 text-xs bg-blue-500 hover:bg-blue-600">
-              立即使用
+            <Button size="sm" className="h-6 px-2 text-xs bg-blue-500 hover:bg-blue-600">
+              使用
             </Button>
           </div>
         </div>
@@ -339,8 +339,8 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
 
   return (
     <Card className="border-0 shadow-lg">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
             <Flame className="w-5 h-5 text-orange-500" />
             <CardTitle className="text-lg font-semibold">
@@ -355,34 +355,34 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
           </div>
         </div>
         
-        {/* Tab切换 */}
-        <div className="flex space-x-4 mt-4">
+        {/* Tab切换 - 更紧凑的设计 */}
+        <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
           <button
             onClick={() => setActiveTab('trends')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'trends'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
             }`}
           >
             📈 行业趋势
           </button>
           <button
             onClick={() => setActiveTab('cases')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'cases'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
             }`}
           >
             💎 成功案例
           </button>
           <button
             onClick={() => setActiveTab('apps')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'apps'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
             }`}
           >
             🔥 爆款应用
@@ -390,31 +390,31 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
         </div>
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="pt-3">
         {/* 行业趋势标签页 */}
         {activeTab === 'trends' && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {INDUSTRY_TRENDS.map((industry) => (
-              <div key={industry.industry} className="space-y-4">
+              <div key={industry.industry} className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">{industry.icon}</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xl">{industry.icon}</span>
                     <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
+                      <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
                         【{industry.industry}】热门上升
                       </h3>
-                      <div className="flex items-center space-x-2 text-sm text-green-600">
-                        <TrendingUp className="w-4 h-4" />
+                      <div className="flex items-center space-x-1 text-xs text-green-600">
+                        <TrendingUp className="w-3 h-3" />
                         <span>增长 +{industry.growth}%</span>
                       </div>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="text-xs">
-                    查看全部
+                  <Button size="sm" variant="outline" className="text-xs h-6 px-2">
+                    全部
                   </Button>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="grid gap-2">
                   {industry.services.map((service, index) => (
                     <TrendingServiceCard 
                       key={index}
@@ -430,7 +430,7 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
 
         {/* 成功案例标签页 */}
         {activeTab === 'cases' && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {SUCCESS_CASES.map((successCase, index) => (
               <SuccessCaseCard key={index} case={successCase} />
             ))}
@@ -439,7 +439,7 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
 
         {/* 爆款应用标签页 */}
         {activeTab === 'apps' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {HOT_APPLICATIONS.map((app) => (
               <HotAppCard key={app.id} app={app} />
             ))}
