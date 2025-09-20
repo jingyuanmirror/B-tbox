@@ -89,16 +89,16 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
   },
   intermediate: {
     level: 'intermediate',
-    title: '🚀 进阶功能解锁 - 🤖小智高级导师',
-    subtitle: '深化功能使用，提升商业价值',
+    title: '🚀 进阶功能深化与优化',
+    subtitle: '功能深化与优化，提升使用效果',
     icon: Rocket,
     color: 'text-blue-600',
     bgColor: 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
     modules: [
       {
         id: '1',
-        title: '小智插件生态集成',
-        description: '掌握高级插件使用技巧',
+        title: '高级功能教程',
+        description: '插件集成指南，多轮对话设计',
         duration: '15分钟',
         difficulty: 'medium',
         completed: true,
@@ -107,8 +107,8 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       },
       {
         id: '2',
-        title: '小智多智能体协作',
-        description: '设计复杂业务流程',
+        title: '🤖 AI 智能优化建议',
+        description: '基于现有智能体的改进建议',
         duration: '20分钟',
         difficulty: 'medium',
         completed: false,
@@ -117,8 +117,8 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       },
       {
         id: '3',
-        title: '小智性能调优',
-        description: '优化响应速度和准确率',
+        title: '性能优化方案',
+        description: '用户体验提升建议',
         duration: '25分钟',
         difficulty: 'medium',
         completed: false,
@@ -127,18 +127,18 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       }
     ],
     benefits: [
-      '小智同行业成功案例对比',
-      '小智ROI计算工具',
-      '小智客户案例包装模板'
+      '同行业成功案例分析',
+      '专家经验分享',
+      '技术交流社区'
     ],
     nextAction: {
-      label: '解锁小智高级功能',
+      label: '解锁高级功能',
       description: '学习插件集成和多智能体协作'
     }
   },
   expert: {
     level: 'expert',
-    title: '🏆 专家级服务 - 🤖小智专家顾问',
+    title: '🏆 专家级服务 - 生态影响力扩展',
     subtitle: '生态影响力扩展，成为行业标杆',
     icon: Crown,
     color: 'text-purple-600',
@@ -146,8 +146,8 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
     modules: [
       {
         id: '1',
-        title: '小智前沿功能内测',
-        description: 'Beta功能抢先体验',
+        title: '前沿功能内测',
+        description: 'Beta功能抢先体验资格',
         duration: '30分钟',
         difficulty: 'hard',
         completed: true,
@@ -156,8 +156,8 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       },
       {
         id: '2',
-        title: '小智架构设计咨询',
-        description: '企业级解决方案设计',
+        title: '架构级解决方案',
+        description: '企业级部署架构咨询',
         duration: '45分钟',
         difficulty: 'hard',
         completed: false,
@@ -166,8 +166,8 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       },
       {
         id: '3',
-        title: '小智生态合作伙伴',
-        description: '平台合作机会对接',
+        title: '平台生态合作',
+        description: '成为官方案例分享伙伴',
         duration: '60分钟',
         difficulty: 'hard',
         completed: false,
@@ -176,12 +176,12 @@ const USER_GUIDANCE_CONFIGS: Record<UserLevel, UserGuidanceConfig> = {
       }
     ],
     benefits: [
-      '成为小智官方案例分享伙伴',
-      '小智技术专家认证',
-      '小智生态合作伙伴商务对接'
+      '产品路线图共建参与',
+      '技术创新实验室准入',
+      '生态合作伙伴商务对接'
     ],
     nextAction: {
-      label: '申请小智专家认证',
+      label: '申请专家认证',
       description: '展示您的专业能力，获得平台官方认证'
     }
   }

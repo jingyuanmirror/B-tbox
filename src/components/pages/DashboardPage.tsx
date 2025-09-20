@@ -32,13 +32,15 @@ const getUserType = (userData: UserData): UserType => {
   
   // ISV服务商识别：多客户项目管理、批量部署需求、商业化变现导向
   // 识别特征：多个智能体跨不同行业、团队成员较多、频繁查看费用数据
-  if (
-    (teamMemberCount && teamMemberCount >= 3) ||
-    multiIndustryProjects === true ||
-    frequentCostChecking === true ||
-    (clientCount && clientCount >= 2) ||
-    (agentCount >= 5 && usageLevel === 'high')
-  ) {
+  // 需要满足多个条件组合，而不是单一条件
+  const isvScore = [
+    teamMemberCount && teamMemberCount >= 5, // 团队规模大
+    multiIndustryProjects === true, // 跨行业项目
+    clientCount && clientCount >= 3, // 多客户
+    agentCount >= 5 && usageLevel === 'high' && frequentCostChecking // 高频使用+成本敏感
+  ].filter(Boolean).length;
+  
+  if (isvScore >= 2) {
     return 'isv';
   }
   
@@ -89,7 +91,7 @@ const mockUserConfigs = {
     usageLevel: 'medium' as const,
     teamMemberCount: 2,
     multiIndustryProjects: false,
-    frequentCostChecking: true,
+    frequentCostChecking: false, // 改为false，避免触发ISV判断
     clientCount: 1
   },
   'expert': {
@@ -99,8 +101,8 @@ const mockUserConfigs = {
     usageLevel: 'high' as const,
     teamMemberCount: 3,
     multiIndustryProjects: false,
-    frequentCostChecking: true,
-    clientCount: 2
+    frequentCostChecking: true, // 专家用户关心成本但不是ISV
+    clientCount: 1 // 减少客户数，避免触发ISV判断
   },
   'isv': {
     agentCount: 8,
