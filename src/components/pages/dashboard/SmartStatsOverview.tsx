@@ -96,164 +96,212 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
     };
 
     const bgColorMap = {
-      blue: 'from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50',
-      green: 'from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50',
-      purple: 'from-purple-50 to-violet-50 dark:from-purple-950/50 dark:to-violet-950/50',
-      orange: 'from-orange-50 to-amber-50 dark:from-orange-950/50 dark:to-amber-950/50',
-      red: 'from-red-50 to-pink-50 dark:from-red-950/50 dark:to-pink-950/50'
+      blue: 'from-blue-50/80 to-indigo-50/80 dark:from-blue-950/40 dark:to-indigo-950/40',
+      green: 'from-green-50/80 to-emerald-50/80 dark:from-green-950/40 dark:to-emerald-950/40',
+      purple: 'from-purple-50/80 to-violet-50/80 dark:from-purple-950/40 dark:to-violet-950/40',
+      orange: 'from-orange-50/80 to-amber-50/80 dark:from-orange-950/40 dark:to-amber-950/40',
+      red: 'from-red-50/80 to-pink-50/80 dark:from-red-950/40 dark:to-pink-950/40'
     };
 
     return (
-      <Card className={`relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br ${bgColorMap[color]}`}>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <div className="flex items-center space-x-3">
-            <div className={`p-2 rounded-lg bg-gradient-to-br ${colorMap[color]} shadow-md`}>
-              <Icon className="h-4 w-4 text-white" />
+      <Card className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br ${bgColorMap[color]} backdrop-blur-sm`}>
+        {/* 装饰性背景元素 */}
+        <div className="absolute inset-0 opacity-10">
+          <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${colorMap[color]} rounded-full -translate-y-8 translate-x-8`}></div>
+          <div className={`absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr ${colorMap[color]} rounded-full translate-y-4 -translate-x-4`}></div>
+        </div>
+        
+        <CardHeader className="relative flex flex-row items-center justify-between pb-3">
+          <div className="flex items-center space-x-4">
+            <div className={`p-3 rounded-2xl bg-gradient-to-br ${colorMap[color]} shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+              <Icon className="h-5 w-5 text-white" />
             </div>
-            <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <CardTitle className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               {title}
             </CardTitle>
           </div>
           <div className="flex items-center space-x-2">
             {anomaly && (
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              <div className="p-1 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                <AlertTriangle className="h-4 w-4 text-amber-600" />
+              </div>
             )}
             {onAIClick && (
               <button
                 onClick={onAIClick}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors"
+                className="p-2 rounded-xl hover:bg-white/30 dark:hover:bg-white/10 transition-all duration-200 group/ai"
                 title="AI智能分析"
               >
-                🤖
+                <span className="text-lg group-hover/ai:scale-110 transition-transform duration-200">🤖</span>
               </button>
             )}
           </div>
         </CardHeader>
         
-        <CardContent className="pt-0">
-          <div className="space-y-2">
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">
+        <CardContent className="relative pt-0 space-y-4">
+          <div>
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
               {value}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
               {subtitle}
             </div>
-            {trend && trendValue && (
-              <div className="flex items-center space-x-1">
-                {trend === 'up' ? (
-                  <TrendingUp className="h-3 w-3 text-green-500" />
-                ) : (
-                  <TrendingDown className="h-3 w-3 text-red-500" />
-                )}
-                <span className={`text-xs font-medium ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
-                  {trendValue}
-                </span>
-              </div>
-            )}
           </div>
+          {trend && trendValue && (
+            <div className="flex items-center space-x-2">
+              <div className={`p-1.5 rounded-lg ${
+                trend === 'up' 
+                  ? 'bg-green-100 dark:bg-green-900/30' 
+                  : 'bg-red-100 dark:bg-red-900/30'
+              }`}>
+                {trend === 'up' ? (
+                  <TrendingUp className="h-3.5 w-3.5 text-green-600" />
+                ) : (
+                  <TrendingDown className="h-3.5 w-3.5 text-red-600" />
+                )}
+              </div>
+              <span className={`text-sm font-semibold ${
+                trend === 'up' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'
+              }`}>
+                {trendValue}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
     );
   };
 
   const PackageUsageCard = () => (
-    <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/50 dark:to-purple-950/50">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 shadow-md">
-            <Package className="h-4 w-4 text-white" />
+    <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 dark:from-indigo-950/40 dark:to-purple-950/40 backdrop-blur-sm">
+      {/* 装饰性背景元素 */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full -translate-y-12 translate-x-12"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-full translate-y-6 -translate-x-6"></div>
+      </div>
+      
+      <CardHeader className="relative flex flex-row items-center justify-between pb-4">
+        <div className="flex items-center space-x-4">
+          <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl group-hover:scale-110 transition-transform duration-300">
+            <Package className="h-5 w-5 text-white" />
           </div>
-          <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <CardTitle className="text-sm font-semibold text-gray-700 dark:text-gray-300">
             套餐使用情况
           </CardTitle>
         </div>
         <button
           onClick={() => setShowAIAnalysis(showAIAnalysis === 'package' ? null : 'package')}
-          className="p-1 rounded-full hover:bg-white/20 transition-colors"
+          className="p-2 rounded-xl hover:bg-white/30 dark:hover:bg-white/10 transition-all duration-200 group/ai"
           title="AI智能分析"
         >
-          🤖
+          <span className="text-lg group-hover/ai:scale-110 transition-transform duration-200">🤖</span>
         </button>
       </CardHeader>
       
-      <CardContent className="pt-0 space-y-4">
+      <CardContent className="relative pt-0 space-y-6">
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">整体使用率</span>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">整体使用率</span>
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">
               {mockStats.packageUsage.overallUsage}%
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+          <div className="w-full bg-gray-200/80 rounded-full h-3 dark:bg-gray-700/80 shadow-inner">
             <div 
-              className="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-3 rounded-full transition-all duration-1000 shadow-lg relative overflow-hidden"
               style={{ width: `${mockStats.packageUsage.overallUsage}%` }}
-            />
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {/* Token使用情况 */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
-                💬 Token使用量
+          <div className="bg-white/60 dark:bg-gray-700/40 rounded-xl p-4 border border-gray-200/50 dark:border-gray-600/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <span className="text-sm">💬</span>
+                Token使用量
               </span>
               <span className="text-xs font-medium text-gray-900 dark:text-white">
                 {mockStats.packageUsage.tokenUsage}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+            <div className="w-full bg-gray-200/80 rounded-full h-2 dark:bg-gray-700/80 shadow-inner">
               <div 
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 h-1.5 rounded-full"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full transition-all duration-700 shadow-sm relative overflow-hidden"
                 style={{ width: `${mockStats.packageUsage.tokenUsage}%` }}
-              />
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+              </div>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {(mockStats.packageUsage.tokenUsed / 1000000).toFixed(1)}M / {mockStats.packageUsage.tokenLimit / 1000000}M
-              <span className="ml-2">预计剩余: {mockStats.packageUsage.daysLeft.tokens}天</span>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between">
+              <span>
+                {(mockStats.packageUsage.tokenUsed / 1000000).toFixed(1)}M / {mockStats.packageUsage.tokenLimit / 1000000}M
+              </span>
+              <span className="font-medium">
+                预计剩余: {mockStats.packageUsage.daysLeft.tokens}天
+              </span>
             </div>
           </div>
 
           {/* 插件调用情况 */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
-                🔌 插件调用
+          <div className="bg-white/60 dark:bg-gray-700/40 rounded-xl p-4 border border-gray-200/50 dark:border-gray-600/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <span className="text-sm">🔌</span>
+                插件调用
               </span>
               <span className="text-xs font-medium text-gray-900 dark:text-white">
                 {mockStats.packageUsage.pluginUsage}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+            <div className="w-full bg-gray-200/80 rounded-full h-2 dark:bg-gray-700/80 shadow-inner">
               <div 
-                className="bg-gradient-to-r from-green-500 to-emerald-500 h-1.5 rounded-full"
+                className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all duration-700 shadow-sm relative overflow-hidden"
                 style={{ width: `${mockStats.packageUsage.pluginUsage}%` }}
-              />
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+              </div>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {mockStats.packageUsage.pluginUsed.toLocaleString()} / {mockStats.packageUsage.pluginLimit.toLocaleString()}
-              <span className="ml-2">预计剩余: {mockStats.packageUsage.daysLeft.plugins}天</span>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex justify-between">
+              <span>
+                {mockStats.packageUsage.pluginUsed.toLocaleString()} / {mockStats.packageUsage.pluginLimit.toLocaleString()}
+              </span>
+              <span className="font-medium">
+                预计剩余: {mockStats.packageUsage.daysLeft.plugins}天
+              </span>
             </div>
           </div>
         </div>
 
-        {/* AI分析建议 */}
+        {/* AI分析建议 - 改进样式 */}
         {showAIAnalysis === 'package' && (
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div className="flex items-start space-x-2">
-              <span className="text-sm">🤖</span>
-              <div className="text-xs text-blue-800 dark:text-blue-200">
-                <p className="font-medium mb-1">小智建议：Token使用率偏高，建议优化</p>
-                <ul className="space-y-1 text-blue-700 dark:text-blue-300">
-                  <li>• 优化对话长度，减少不必要的上下文</li>
-                  <li>• 调整模型参数，降低Token消耗</li>
+          <div className="bg-gradient-to-r from-blue-50/90 to-indigo-50/90 dark:from-blue-950/40 dark:to-indigo-950/40 rounded-xl p-4 border border-blue-200/50 dark:border-blue-700/50 backdrop-blur-sm">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-sm">🤖</span>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                  小智建议：Token使用率偏高，建议优化
+                </h4>
+                <ul className="space-y-1 text-xs text-blue-700 dark:text-blue-300 mb-4">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
+                    优化对话长度，减少不必要的上下文
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
+                    调整模型参数，降低Token消耗
+                  </li>
                 </ul>
-                <div className="flex gap-2 mt-2">
-                  <Button size="sm" variant="outline" className="h-6 text-xs">
+                <div className="flex gap-3">
+                  <Button size="sm" variant="outline" className="h-8 text-xs font-medium border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-600 dark:text-blue-300">
                     查看AI分析
                   </Button>
-                  <Button size="sm" variant="outline" className="h-6 text-xs">
+                  <Button size="sm" variant="outline" className="h-8 text-xs font-medium border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-600 dark:text-blue-300">
                     获取优化方案
                   </Button>
                 </div>
@@ -266,24 +314,32 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
+      {/* 页面标题 */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            智能仪表盘
-          </h2>
-          <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <Activity className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              智能数据概览
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">实时监控，智能洞察</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="text-xs text-gray-500 dark:text-gray-400 bg-white/60 dark:bg-gray-800/60 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+            🤖 AI智能预测与异常检测
+          </div>
+          <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-medium px-3 py-1.5">
             实时数据
           </Badge>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400">
-          🤖 AI智能预测与异常检测
-        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
-        {/* 智能体总数 */}
+      {/* 统计卡片网格 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         <StatCard
           icon={Bot}
           title="智能体总数"
@@ -294,8 +350,7 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
           color="blue"
           onAIClick={() => setShowAIAnalysis(showAIAnalysis === 'agents' ? null : 'agents')}
         />
-
-        {/* 智能体DAU */}
+        
         <StatCard
           icon={Eye}
           title="智能体 DAU"
@@ -307,8 +362,7 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
           anomaly={mockStats.dau.anomalyDetected}
           onAIClick={() => setShowAIAnalysis(showAIAnalysis === 'dau' ? null : 'dau')}
         />
-
-        {/* 费用消耗 */}
+        
         <StatCard
           icon={CreditCard}
           title="费用消耗"
@@ -319,8 +373,7 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
           color="orange"
           onAIClick={() => setShowAIAnalysis(showAIAnalysis === 'cost' ? null : 'cost')}
         />
-
-        {/* 套餐使用情况 - 占用一个完整卡片位置 */}
+        
         <PackageUsageCard />
       </div>
 
