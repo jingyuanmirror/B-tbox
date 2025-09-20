@@ -134,29 +134,28 @@ export function DashboardPage() {
   if (userType === 'pure-new') {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* 用户类型切换器 */}
-        <div className="fixed top-4 right-4 z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-3">
-            <div className="text-xs text-gray-500 mb-2">用户类型预览</div>
-            <div className="flex gap-1">
-              {(Object.keys(userTypeLabels) as UserType[]).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setCurrentUserType(type)}
-                  className={`px-3 py-1 text-xs rounded-md transition-colors ${
-                    currentUserType === type
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {userTypeLabels[type]}
-                </button>
-              ))}
+        <div className="max-w-7xl mx-auto p-6">
+          {/* 头部区域 - 包含切换器 */}
+          <div className="mb-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">欢迎使用百宝箱</h1>
+              <p className="text-gray-600 dark:text-gray-400">开始您的AI智能体之旅</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <select
+                value={currentUserType}
+                onChange={(e) => setCurrentUserType(e.target.value as UserType)}
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+              >
+                {(Object.keys(userTypeLabels) as UserType[]).map((type) => (
+                  <option key={type} value={type}>
+                    {userTypeLabels[type]}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto p-6">
+          
           {/* 纯新用户引导页面 */}
           <PureNewUserGuide 
             onAgentCreated={() => {
@@ -181,28 +180,6 @@ export function DashboardPage() {
   // 其他用户类型显示完整仪表盘
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      {/* 用户类型切换器 */}
-      <div className="fixed top-6 right-6 z-50">
-        <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4">
-          <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-3">用户类型预览</div>
-          <div className="flex gap-2">
-            {(Object.keys(userTypeLabels) as UserType[]).map((type) => (
-              <button
-                key={type}
-                onClick={() => setCurrentUserType(type)}
-                className={`px-4 py-2 text-xs font-medium rounded-lg transition-all duration-200 ${
-                  currentUserType === type
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md'
-                }`}
-              >
-                {userTypeLabels[type]}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* 页面标题和欢迎信息 */}
         <div className="mb-8">
@@ -212,9 +189,23 @@ export function DashboardPage() {
               <p className="text-gray-600 dark:text-gray-400">实时数据，助力决策</p>
             </div>
             <div className="flex items-center gap-3">
+              {/* 用户类型切换器 - 集成到右上角 */}
+              <div className="relative">
+                <select
+                  value={currentUserType}
+                  onChange={(e) => setCurrentUserType(e.target.value as UserType)}
+                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer hover:bg-white dark:hover:bg-gray-800"
+                >
+                  {(Object.keys(userTypeLabels) as UserType[]).map((type) => (
+                    <option key={type} value={type}>
+                      {userTypeLabels[type]}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="bg-blue-500/10 px-4 py-2 rounded-lg border border-blue-500/20">
                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  {userTypeLabels[userType]}
+                  当前: {userTypeLabels[userType]}
                 </span>
               </div>
             </div>
