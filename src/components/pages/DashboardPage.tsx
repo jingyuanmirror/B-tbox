@@ -203,11 +203,6 @@ export function DashboardPage() {
                   ))}
                 </select>
               </div>
-              <div className="bg-blue-500/10 px-4 py-2 rounded-lg border border-blue-500/20">
-                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  当前: {userTypeLabels[userType]}
-                </span>
-              </div>
             </div>
           </div>
         </div>
