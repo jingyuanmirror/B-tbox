@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ServiceType } from '@/types/service';
+import { ServiceType, Service } from '@/types/service';
 import { ServiceMarketTabs } from '@/components/service-market/ServiceMarketTabs';
 import { ServiceMarketContent } from '@/components/service-market/ServiceMarketContent';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ export function ServiceMarketPage() {
     console.log('Publishing service:', data);
     
     // 创建服务对象
-    const newService = {
+    const newService: Service = {
       id: `service_${Date.now()}`,
       name: data.serviceName || '未命名服务',
       description: data.serviceDescription || '暂无描述',
@@ -52,10 +52,8 @@ export function ServiceMarketPage() {
       createdAt: data.publishTime || new Date().toISOString(),
       updatedAt: data.publishTime || new Date().toISOString(),
       icon: data.logoUrl || data.logo || '',
-      permissionCheckResult: data.permissionCheckResult,
-      status: 'published',
       isFree: true
-    } as any;
+    };
     
     // 添加到已发布服务
     addPublishedService(newService);
