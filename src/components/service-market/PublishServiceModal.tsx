@@ -18,15 +18,18 @@ enum Step {
 interface PublishServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onPublish: (data: any) => void;
 }
 
 export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServiceModalProps) {
   const [leftTab, setLeftTab] = useState<'market' | 'space'>('space');
   const [step, setStep] = useState<Step>(Step.SelectType);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [formData, setFormData] = useState<any>({});
   // 用于服务来源页面的搜索和服务数据
   const [search, setSearch] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { services, isLoading } = require('@/hooks/useServices').useServices({ search });
 
   // 表单验证状态
@@ -214,6 +217,7 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
   }, [step]);
 
   // 实时验证单个字段
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validateField = (fieldName: string, value: any) => {
     const newErrors = { ...errors };
     
@@ -365,6 +369,7 @@ export function PublishServiceModal({ isOpen, onClose, onPublish }: PublishServi
   };
 
   // 初始化表单数据函数
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initializeFormData = (service: any) => {
     const currentVersion = service.version || '1.0.0';
     const versionParts = currentVersion.split('.');

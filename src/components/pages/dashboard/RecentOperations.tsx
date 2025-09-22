@@ -262,7 +262,7 @@ export function RecentOperations({ userType, userData }: RecentOperationsProps) 
                 <div className="text-sm font-medium text-gray-900 dark:text-white mb-1">
                   <span className="font-semibold">{operation.operator}</span>
                   <span className="mx-1 text-gray-600 dark:text-gray-400">{operation.action}了</span>
-                  <span className={`font-medium ${typeConfig.color}`}>"{operation.target}"</span>
+                  <span className={`font-medium ${typeConfig.color}`}>&quot;{operation.target}&quot;</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                   <span className={`inline-block w-2 h-2 rounded-full ${typeConfig.color.replace('text-', 'bg-')}`}></span>

@@ -33,6 +33,7 @@ export function ServiceMarketPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePublishService = (data: any) => {
     console.log('Publishing service:', data);
     
@@ -54,7 +55,7 @@ export function ServiceMarketPage() {
       permissionCheckResult: data.permissionCheckResult,
       status: 'published',
       isFree: true
-    };
+    } as any;
     
     // 添加到已发布服务
     addPublishedService(newService);

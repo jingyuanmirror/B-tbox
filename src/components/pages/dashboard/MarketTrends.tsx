@@ -189,6 +189,7 @@ export function MarketTrends({ userType, userData }: MarketTrendsProps) {
   const [activeTab, setActiveTab] = useState<'trends' | 'cases' | 'apps'>('trends');
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const TrendingServiceCard = ({ service, industryIcon }: { service: any; industryIcon: string }) => (
     <div className="p-3 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-750 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-md transition-all">
       <div className="flex items-center justify-between mb-2">

@@ -159,7 +159,17 @@ const OPERATION_ITEMS = [
   }
 ];
 
-const renderNavigationSection = (items: any[], collapsed: boolean, currentPage: string, onPageChange: (page: string) => void) => {
+interface NavigationItem {
+  key: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: any;
+  label: string;
+  isHeader?: boolean;
+  isAvailable?: boolean;
+  beta?: boolean;
+}
+
+const renderNavigationSection = (items: NavigationItem[], collapsed: boolean, currentPage: string, onPageChange: (page: string) => void) => {
   return items.map((item) => {
     if (item.isHeader) {
       return !collapsed ? (

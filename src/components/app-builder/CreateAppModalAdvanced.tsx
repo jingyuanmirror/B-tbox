@@ -282,12 +282,10 @@ function CreateAppModalAdvanced({ isOpen, onClose, onSuccess }: CreateAppModalPr
                   <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
                     <span className="text-lg">🚀</span>
                   </div>
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">应用创建中...</h3>
-                  <p className="text-xs text-gray-600 mb-3">
-                    正在为您配置 "{appName}" 应用
-                  </p>
-                  
-                  <div className="max-w-sm mx-auto space-y-2 text-left">
+                <h3 className="text-sm font-medium text-gray-900 mb-1">应用创建中...</h3>
+                <p className="text-xs text-gray-600 mb-3">
+                  正在为您配置 &quot;{appName}&quot; 应用
+                </p>                  <div className="max-w-sm mx-auto space-y-2 text-left">
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs">✓</span>
