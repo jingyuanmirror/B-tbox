@@ -116,7 +116,7 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
             <div className={`p-2 rounded-xl bg-gradient-to-br ${colorMap[color]} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
               <Icon className="h-4 w-4 text-white" />
             </div>
-            <CardTitle className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+            <CardTitle className="text-sm font-bold text-gray-700 dark:text-gray-300">
               {title}
             </CardTitle>
           </div>
@@ -140,10 +140,10 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
         
         <CardContent className="relative pt-0 space-y-2">
           <div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white mb-0.5">
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">
               {value}
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+            <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
               {subtitle}
             </div>
           </div>
@@ -185,7 +185,7 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
           <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg group-hover:scale-110 transition-transform duration-300">
             <Package className="h-4 w-4 text-white" />
           </div>
-          <CardTitle className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+          <CardTitle className="text-sm font-bold text-gray-700 dark:text-gray-300">
             套餐使用情况
           </CardTitle>
         </div>
@@ -201,8 +201,8 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
       <CardContent className="relative pt-0 space-y-3">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">整体使用率</span>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">整体使用率</span>
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">
               {mockStats.packageUsage.overallUsage}%
             </span>
           </div>
@@ -318,10 +318,10 @@ export function SmartStatsOverview({ userType, userData }: SmartStatsOverviewPro
             <Activity className="h-4 w-4 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               智能数据概览
             </h2>
-            <p className="text-xs text-gray-600 dark:text-gray-400">实时监控，智能洞察</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">实时监控，智能洞察</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
