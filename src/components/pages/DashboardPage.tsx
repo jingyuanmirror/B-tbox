@@ -207,8 +207,8 @@ export function DashboardPage() {
           </div>
         </div>
 
-        {/* 智能数据概览 */}
-        <div className="mb-10">
+        {/* 智能数据概览 - 减少间距 */}
+        <div className="mb-6">
           <SmartStatsOverview userType={userType} userData={userData} />
         </div>
 
