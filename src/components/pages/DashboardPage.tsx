@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SmartStatsOverview } from './dashboard/SmartStatsOverview';
 import { PureNewUserGuide } from './dashboard/PureNewUserGuide';
 import { MarketTrends } from './dashboard/MarketTrends';
 import { RecentOperations } from './dashboard/RecentOperations';
 import { SmartLearningGuidance } from './dashboard/SmartLearningGuidance';
+import { useScrollHeader } from '@/hooks/useScrollHeader';
+import { usePageStore } from '@/store/usePageStore';
 // import { SmartMessageCenter } from './dashboard/SmartMessageCenter';
 
 export type UserType = 'pure-new' | 'newbie' | 'advanced' | 'expert' | 'isv';
@@ -120,6 +122,13 @@ export function DashboardPage() {
   const [currentUserType, setCurrentUserType] = useState<UserType>('isv');
   const userData = mockUserConfigs[currentUserType];
   const userType = getUserType(userData);
+  const { setCurrentPageTitle } = usePageStore();
+  const { titleRef } = useScrollHeader({ threshold: 120 });
+  
+  // Set page title when component mounts
+  useEffect(() => {
+    setCurrentPageTitle('智能仪表盘');
+  }, [setCurrentPageTitle]);
   
   // 用户类型标签配置
   const userTypeLabels = {
@@ -132,13 +141,18 @@ export function DashboardPage() {
   
   // 纯新用户显示特殊布局
   if (userType === 'pure-new') {
+    // Set page title for pure new users
+    useEffect(() => {
+      setCurrentPageTitle('欢迎使用百宝箱');
+    }, [setCurrentPageTitle]);
+
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto p-6">
           {/* 头部区域 - 包含切换器 */}
           <div className="mb-6 flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">欢迎使用百宝箱</h1>
+              <h1 ref={titleRef} data-page-title className="text-2xl font-bold text-gray-900 dark:text-white">欢迎使用百宝箱</h1>
               <p className="text-gray-600 dark:text-gray-400">开始您的AI智能体之旅</p>
             </div>
             <div className="flex items-center gap-3">
@@ -185,7 +199,7 @@ export function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">智能仪表盘</h1>
+              <h1 ref={titleRef} data-page-title className="text-3xl font-bold text-gray-900 dark:text-white mb-2">智能仪表盘</h1>
               <p className="text-gray-600 dark:text-gray-400">实时数据，助力决策</p>
             </div>
             <div className="flex items-center gap-3">
