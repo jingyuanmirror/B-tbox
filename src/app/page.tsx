@@ -68,6 +68,10 @@ export default function Home() {
             icon={Settings}
           />
         );
+      case "areal":
+        // 动态导入 areal 页面组件
+        const ArealPage = require("./areal/page").default;
+        return <ArealPage />;
       default:
         return <DashboardPage />;
     }

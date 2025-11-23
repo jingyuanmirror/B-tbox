@@ -156,6 +156,12 @@ const OPERATION_ITEMS = [
     label: '活动中心',
     icon: TrendingUp,
     description: ''
+  },
+  {
+    key: 'areal',
+    label: 'Areal 区域',
+    icon: BarChart3,
+    description: ''
   }
 ];
 
