@@ -6,6 +6,7 @@ import { PureNewUserGuide } from './dashboard/PureNewUserGuide';
 import { MarketTrends } from './dashboard/MarketTrends';
 import { RecentOperations } from './dashboard/RecentOperations';
 import { SmartLearningGuidance } from './dashboard/SmartLearningGuidance';
+import { AssistantDialog } from '@/components/assistant/AssistantDialog';
 import { useScrollHeader } from '@/hooks/useScrollHeader';
 import { usePageStore } from '@/store/usePageStore';
 // import { SmartMessageCenter } from './dashboard/SmartMessageCenter';
@@ -127,8 +128,8 @@ export function DashboardPage() {
   
   // Set page title when component mounts
   useEffect(() => {
-    setCurrentPageTitle('智能仪表盘');
-  }, [setCurrentPageTitle]);
+    setCurrentPageTitle(userType === 'pure-new' ? '欢迎使用百宝箱' : '智能仪表盘');
+  }, [setCurrentPageTitle, userType]);
   
   // 用户类型标签配置
   const userTypeLabels = {
@@ -141,20 +142,11 @@ export function DashboardPage() {
   
   // 纯新用户显示特殊布局
   if (userType === 'pure-new') {
-    // Set page title for pure new users
-    useEffect(() => {
-      setCurrentPageTitle('欢迎使用百宝箱');
-    }, [setCurrentPageTitle]);
-
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto p-6">
-          {/* 头部区域 - 包含切换器 */}
-          <div className="mb-6 flex justify-between items-center">
-            <div>
-              <h1 ref={titleRef} data-page-title className="text-2xl font-bold text-gray-900 dark:text-white">欢迎使用百宝箱</h1>
-              <p className="text-gray-600 dark:text-gray-400">开始您的AI智能体之旅</p>
-            </div>
+          {/* 头部区域 - 仅保留用户类型切换 */}
+          <div className="mb-6 flex justify-end items-center">
             <div className="flex items-center gap-3">
               <select
                 value={currentUserType}
@@ -169,23 +161,21 @@ export function DashboardPage() {
               </select>
             </div>
           </div>
-          
-          {/* 纯新用户引导页面 */}
-          <PureNewUserGuide 
-            onAgentCreated={() => {
-              // 智能体创建后的回调
-              console.log('Agent created');
-            }} 
-            onOpenAIAssistant={() => {
-              // 打开AI助手的回调
-              console.log('Open AI Assistant');
-            }} 
-          />
-          
-          {/* 市场趋势 - 帮助新用户了解行业 */}
-          <div className="mt-8">
-            <MarketTrends userType={userType} userData={userData} />
+
+          {/* 智能助理对话框 */}
+          <div className="mb-8">
+            <AssistantDialog />
           </div>
+
+          {/* 纯新用户引导页面 */}
+          <PureNewUserGuide
+            onAgentCreated={() => {
+              console.log('Agent created');
+            }}
+            onOpenAIAssistant={() => {
+              console.log('Open AI Assistant');
+            }}
+          />
         </div>
       </div>
     );
@@ -219,6 +209,11 @@ export function DashboardPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* 智能助理对话框 */}
+        <div className="mb-8">
+          <AssistantDialog />
         </div>
 
         {/* 智能数据概览 - 减少间距 */}

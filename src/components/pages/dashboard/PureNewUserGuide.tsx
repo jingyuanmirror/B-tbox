@@ -232,14 +232,12 @@ export function PureNewUserGuide({ onAgentCreated, onOpenAIAssistant }: PureNewU
       <Card className="border-0 shadow-xl bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg mb-4">
-              <Sparkles className="w-10 h-10 text-white" />
-            </div>
+            
             <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-              立即开始创建您的第一个AI助手
+              也可通过模块，快速创建您的第一个AI助手
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
-              一键选择模板，3分钟见效果，让AI为您的业务赋能
+              一键复制，3分钟见效果
             </p>
           </div>
 
@@ -250,28 +248,7 @@ export function PureNewUserGuide({ onAgentCreated, onOpenAIAssistant }: PureNewU
             ))}
           </div>
 
-          {/* AI助手指导提示 */}
-          <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
-            <div className="flex items-start space-x-3">
-              <div className="text-2xl">🤖</div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                  AI创建助手已就绪
-                </h3>
-                <p className="text-blue-700 dark:text-blue-300 text-sm">
-                  我会全程指导您的创建过程，包括模板选择、参数配置、效果测试。有任何问题都可以随时询问我！
-                </p>
-                <Button 
-                  size="sm" 
-                  className="mt-2 bg-blue-500 hover:bg-blue-600"
-                  onClick={onOpenAIAssistant}
-                >
-                  开始AI指导 <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </CardContent>
+          </CardContent>
       </Card>
 
       {/* 新手专属福利 */}
