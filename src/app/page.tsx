@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { DashboardPage } from "@/components/pages/DashboardPage";
@@ -70,7 +71,7 @@ export default function Home() {
         );
       case "areal":
         // 动态导入 areal 页面组件
-        const ArealPage = require("./areal/page").default;
+        const ArealPage = dynamic(() => import("./areal/page"));
         return <ArealPage />;
       default:
         return <DashboardPage />;
