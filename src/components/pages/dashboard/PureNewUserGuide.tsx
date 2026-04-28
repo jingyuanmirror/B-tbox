@@ -32,7 +32,7 @@ const POPULAR_TEMPLATES = [
   {
     id: 'customer-service',
     name: '客服助手',
-    icon: '🏆',
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
     description: '最受欢迎，5分钟上手，客户满意度95%+',
     difficulty: '超简单',
     time: '3分钟',
@@ -45,7 +45,7 @@ const POPULAR_TEMPLATES = [
   {
     id: 'knowledge-qa',
     name: '知识问答',
-    icon: '⚡',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
     description: '最易配置，导入文档即可使用，立竿见影',
     difficulty: '简单',
     time: '5分钟',
@@ -58,7 +58,7 @@ const POPULAR_TEMPLATES = [
   {
     id: 'task-assistant',
     name: '任务助手',
-    icon: '🔧',
+    avatar: 'https://randomuser.me/api/portraits/men/75.jpg',
     description: '功能全面，适合探索各种AI能力',
     difficulty: '中等',
     time: '10分钟',
@@ -106,7 +106,7 @@ const SUCCESS_STORIES = [
     template: '客服助手',
     result: '客服效率提升60%，投诉减少40%',
     roi: '3个月回本',
-    avatar: '🏨'
+    avatar: 'https://randomuser.me/api/portraits/women/68.jpg'
   },
   {
     industry: '教育行业',
@@ -114,7 +114,7 @@ const SUCCESS_STORIES = [
     template: '知识问答',
     result: '学员问题解答效率提升80%',
     roi: '2个月回本',
-    avatar: '📚'
+    avatar: 'https://randomuser.me/api/portraits/men/46.jpg'
   },
   {
     industry: '电商行业',
@@ -122,7 +122,7 @@ const SUCCESS_STORIES = [
     template: '任务助手',
     result: '订单处理效率提升50%',
     roi: '4个月回本',
-    avatar: '🛍️'
+    avatar: 'https://randomuser.me/api/portraits/women/33.jpg'
   }
 ];
 
@@ -151,7 +151,9 @@ export function PureNewUserGuide({ onAgentCreated, onOpenAIAssistant }: PureNewU
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="text-3xl">{template.icon}</div>
+            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-white/30">
+              <img src={template.avatar} alt={template.name} className="w-full h-full object-cover" />
+            </div>
             <div>
               <CardTitle className="text-lg font-bold text-white">
                 {template.name}
@@ -227,7 +229,7 @@ export function PureNewUserGuide({ onAgentCreated, onOpenAIAssistant }: PureNewU
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 pt-8">
       {/* 核心创建区域 */}
       <Card className="border-0 shadow-xl bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
         <CardContent className="p-8">
@@ -320,7 +322,9 @@ export function PureNewUserGuide({ onAgentCreated, onOpenAIAssistant }: PureNewU
                 className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30"
               >
                 <div className="flex items-start space-x-3 mb-3">
-                  <div className="text-2xl">{story.avatar}</div>
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                    <img src={story.avatar} alt={story.company} className="w-full h-full object-cover" />
+                  </div>
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">
                       {story.company}

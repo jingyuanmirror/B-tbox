@@ -163,7 +163,7 @@ export function DashboardPage() {
           </div>
 
           {/* 智能助理对话框 */}
-          <div className="mb-8">
+          <div className="mb-20">
             <AssistantDialog />
           </div>
 
